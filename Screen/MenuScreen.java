@@ -54,7 +54,7 @@ public class MenuScreen extends Screen {
 
         // ปุ่มกดแล้วทำงาน
         playButton.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Go to Character Select (ยังไม่ได้ทำหน้า CharacterScreen)");
+            app.setScreen(new GameScreen(app,"",selectedCharacter));
         });
 
         characterButton.addActionListener(e -> {
@@ -101,5 +101,4 @@ public class MenuScreen extends Screen {
         }
     }
 
-    
 }
