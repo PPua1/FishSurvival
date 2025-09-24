@@ -1,76 +1,84 @@
 package Object;
-
 import java.awt.*;
 
 public class Character {
-    // private int x;
-    // private int y;
-    // private int speed;
-    // private Image icon;
-    // private boolean isAlive = true;
-    // private CharacterType characterType;
+    private int x;
+    private int y;
+    private int speedY = 0;//ความเร็วแนวตั้ง
+    private Image icon;
+    private CharacterType characterType;
+    private boolean isAlive = true;
+    private boolean isJumping = false;
 
-    // public Character(int x, int y , CharacterType type, Image icon){
-    //     this.x = x;
-    //     this.y = y;
-    //     this.characterType = type ; 
-    //     this.icon = type.getCharacterImage();
-    // }
-    
-    // public void MoveUp(){
-    //     y -= speed;
-    // }
-    // public void fallDown(){
-    //     y += speed;
-    // }
-    // public void jump(){
-    //     int Jump = 6;
-    //     speed = -Jump;
-    // }
-    // public void update(){
-    //     int gravity = 1;
-    //     speed += gravity;
-    //     y += speed;
-    // }
-    // public void collide(){
-    //     this.isAlive = false;
+    private static final int Gravity = 1; //แรงโน้มถ่วงเป็น1
+    private static final int Jump =  -15 ; //ความเร็วตอนกระโดด
+    private static final int Character_Size = 80;
+    public Character(int x, int y , CharacterType type){
+        this.x = x;
+        this.y = y;
+        this.characterType = type ; 
+        this.icon = type.getCharacterImage();
+    }
+    public void Reset(int startX, int startY){
+        this.x = startX;
+        this.y = startY;
+        this.speedY = 0;
+        this.isAlive = true;
+        this.isJumping = false;
+    }
+    public void jump(){
+        if (isAlive) {
+            speedY = Jump;
+            isJumping = true;
+        }
+    }
+    public void update(){
+        if (!isAlive) {
+            return;
+        }
 
-    // }
-    // public void draw(Graphics g){
-    //     if(icon != null){
-    //         g.drawImage(icon, x, y, null);
-    //     }
-    // }
+        int ground = 640 - Character_Size; //พื้น
+        speedY += Gravity;
+        y += speedY;
 
-    //     public Rectangle getBounds() {
-    //     if (icon != null) {
-    //         return new Rectangle(x, y, icon.getWidth(null), icon.getHeight(null));
-    //     } else {
-    //         return new Rectangle(x, y, 32, 32);
-    //     }
-    // }
+        //ตกถึงพื้น -> ตาย
+        if (y >= ground) {
+            y = ground;
+            speedY = 0;
+            isJumping = false;
+            collide();
+        }
+        //หัวชนเพดาน -> ตาย
+        if (y <= 0) {
+            y = 0;
+            speedY = 0;
+            collide();
+        }
+    }
 
-    // public int getX(){ 
-    //     return x; 
-    // }
-    // public int getY(){ 
-    //     return y; 
-    // }
-    // public boolean isAlive(){
-    //     return isAlive; 
-    // }
-    // public CharacterType getType(){
-    //     return characterType; 
-    // }
+    //ชนแล้วตาย
+    public void collide(){
+        this.isAlive = false;
 
-    // public void setX(int x){
-    //     this.x = x; 
-    // }
-    // public void setY(int y){
-    //     this.y = y; 
-    // }
-    // public void setAlive(boolean alive){ 
-    //     this.isAlive = alive; 
-    // }
+    }
+
+    public void draw(Graphics g){
+        if(icon != null){
+            g.drawImage(icon, x, y,Character_Size,Character_Size, null);
+        }
+    }
+
+    public Rectangle getBounds() {
+            return new Rectangle(x, y, Character_Size, Character_Size);
+    }
+
+    public int getX(){ return x; }
+    public int getY(){ return y; }
+    public boolean isAlive(){ return isAlive; }
+    public CharacterType getType(){ return characterType; }
+
+    public void setX(int x){ this.x = x; }
+    public void setY(int y){ this.y = y; }
+    public void setAlive(boolean alive){ this.isAlive = alive; }
 
 }
