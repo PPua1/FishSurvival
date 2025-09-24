@@ -14,6 +14,8 @@ public class GameTimer {
         this.timer = new Timer(delay, this.action);
     }
 
+
+
     public void start() {
         timer.start();
     }

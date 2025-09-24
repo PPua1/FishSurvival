@@ -1,55 +1,75 @@
 package Object;
 
-import java.awt.*;
+import java.awt.Image;
+import java.awt.Rectangle;
 
 public class Pipe {
-    private int x;
-    private int topHeight;
-    private int bottomHeight;
-    private int width;
-    private int gap;
-    private boolean passed = false;
-    private Image topImage;
-    private Image bottomImage;
-    private int speed = 3;
+        private int x ;
+        private int y ;
+        private int width = 64;
+        private int height = 512 ;
+        private boolean passed = false;
+        private Image img;
 
-    public Pipe(int x, int topHeight ,int bottomHeight, int width ){
-        this.x = x;
-        this.topHeight = topHeight;
-        this.gap = gap;
-        this.width = width;
-        this.bottomHeight = 640 - (topHeight + gap); // สมมติความสูงจอ = 640
-        this.topImage = topImage;
-        this.bottomImage = bottomImage;
-    }
-    // เลื่อนท่อ
-    public void move(){
-        x -= speed;
-    }
+        Pipe(Image img, int x, int y) {
+            this.x = x;
+            this.y = y;
+            // this.width = width;
+            // this.height = height;
+            this.height = img.getHeight(null);
 
-    // ตรวจท่อหลุดจอ
-    public boolean isOffScreen(){
-            return  (x + width) < 0;
+            this.img = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            
+        }
+        
+        public boolean isOffScreen() {
+            return x + width < 0;
+        }
 
-    }
+        public void setX(int x) {
+             this.x = x;
+        }
+        public int getX() {
+            return x; 
+        }
 
-    // ตรวจว่าผ่านตัวละคร เพื่อใช้เพิ่มคะแนน
-    public boolean isPassed(Character character){
-        if (!passed && (x+width) < character.getX()){
-            passed = true;
+        public void setY(int y) {
+            this.y = y;
+        }
+
+        public int getY() {
+            return y; 
+        }
+
+        public void setWidth(int width) { 
+            this.width = width; 
+        }
+        
+        public int getWidth() { 
+            return width; 
+        }
+
+    public void setHeight(int height) { this.height = height; }
+    public int getHeight() { return height; }
+
+        public Rectangle[] getBounds() {
+            int marginX = -3;
+            int marginY = 5;
+            return new Rectangle[]{
+                new Rectangle(x + marginX, y + marginY, width + 2*marginX, height - 2*marginY)
+            };
+        }
+
+
+        public boolean isPassed() {
             return passed;
         }
-            return false;
-    }
 
-    public void draw(Graphics g){
-        g.drawImage(topImage, x, 0, width, topHeight, null);
-        g.drawImage(bottomImage, x, topHeight + gap, width, bottomHeight, null);
+        public void setPassed(boolean p) {
+            passed = p;
+        }
 
+        public Image getImage() {
+            return img; 
+        }
     }
-    public Rectangle[] getBounds(){
-        Rectangle topRect = new Rectangle(x, 0, width, topHeight);
-        Rectangle bottomRect = new Rectangle(x, topHeight + gap, width, bottomHeight);
-        return new Rectangle[]{topRect, bottomRect};
-    }
-}

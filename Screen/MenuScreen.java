@@ -36,7 +36,7 @@ public class MenuScreen extends Screen {
         playButton.setBorderPainted(false);      // ไม่วาดเส้นขอบ
         playButton.setFocusPainted(false);       // ไม่วาดกรอบตอน focus
         playButton.setOpaque(false); 
-        playButton.setBounds(0, 360, 360, 45);
+        playButton.setBounds(0, 350, 360, 45);
         playButton.setFont(new Font("Arial", Font.BOLD, 30));
 
         characterButton = new JButton("Character");
@@ -54,7 +54,7 @@ public class MenuScreen extends Screen {
 
         // ปุ่มกดแล้วทำงาน
         playButton.addActionListener(e -> {
-            app.setScreen(new GameScreen(app,"",selectedCharacter));
+            app.setScreen(new GameScreen(app, "", selectedCharacter));
         });
 
         characterButton.addActionListener(e -> {
@@ -83,7 +83,7 @@ public class MenuScreen extends Screen {
                 int h = (int) (charImg.getHeight(null) * scale);
 
                 int x = (getWidth() - w) / 2; // วางตรงกลาง
-                int y = (getHeight() - h)/2;
+                int y = ((getHeight() - h)/2) - 20;
                 g.drawImage(charImg, x, y, w, h, this);
             }
     }
@@ -101,4 +101,5 @@ public class MenuScreen extends Screen {
         }
     }
 
+    
 }
