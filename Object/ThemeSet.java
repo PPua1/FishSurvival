@@ -17,11 +17,13 @@ public class ThemeSet {
         return background;
     }
 
-    public Image getTopImage() {
+    public Image getTopPipe() {
         return topImage;
     }
 
-    public Image getBottomImage() {
+    public Image getBottomPipe() {
         return bottomImage;
     }
+
+
 }

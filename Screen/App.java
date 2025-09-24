@@ -28,7 +28,7 @@ public class App extends JFrame {
 
 
     public App() {
-        super("Fish Survi");
+        super("Fish Survival");
 
         this.fileManager = new FileManager("highscore.txt");
 
@@ -65,5 +65,5 @@ public class App extends JFrame {
 
     public static void main(String[] args) {
         new App();
-    }
+    } 
 }
