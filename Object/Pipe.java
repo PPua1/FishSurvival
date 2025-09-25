@@ -7,13 +7,15 @@ public class Pipe {
         private int x ;
         private int y ;
         private int width = 64;
-        private int height = 510 ;
+        private int height = 512 ;
         private boolean passed = false;
         private Image img;
 
         Pipe(Image img, int x, int y) {
             this.x = x;
             this.y = y;
+            // this.width = width;
+            // this.height = height;
             this.height = img.getHeight(null);
 
             this.img = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
