@@ -9,10 +9,6 @@ public class PipeManager {
     private ArrayList<Pipe> pipes;
     private int boardWidth = 360;
     private int boardHeight = 640;
-    private int pipeWidth = 64;
-    // private int pipeHeight = 512;
-    // private int minPipeHeight = 100; // สูงสุด-ต่ำสุด
-    // private int maxPipeHeight = 400;
     private int gap = 150;
     private int velocityX = -2; // ความเร็วท่อขยับ
 
@@ -61,19 +57,25 @@ public class PipeManager {
             pipe.setX(pipe.getX() + velocityX);
         }
         // ลบท่อที่หลุดซ้าย
-        pipes.removeIf(pipe -> pipe.getX() + pipeWidth < 0);
+        pipes.removeIf(pipe -> pipe.getX() + boardWidth < 0);
     }
 
-    // ตรวจชนกับนก
-    public boolean checkCollision(Rectangle birdRect) {
+    // ตรวจชนกับปลา
+    public boolean checkCollision(Rectangle FishRect) {
         for (Pipe pipe : pipes) {
             for (Rectangle rect : pipe.getBounds()) {
-                if (birdRect.intersects(rect)) {
+                if (FishRect.intersects(rect)) {
                     return true;
                 }
             }
         }
         return false;
     }
+     // method เปลี่ยนรูป
+    public void setPipeImages(Image top, Image bottom) {
+    this.topPipeImg = top;
+    this.bottomPipeImg = bottom;
+}
+
 
 }
