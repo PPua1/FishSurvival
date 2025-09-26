@@ -10,6 +10,7 @@ import Object.PipeManager;
 import Object.Theme;
 import Object.Character;
 import Object.Pipe;
+import Object.Score;
 
 public class GameLogic {
     private Character character;
@@ -17,6 +18,7 @@ public class GameLogic {
     private Image backgroundImg;
     private int boardWidth = 360;
     private int boardHeight = 640;
+    private int Score;
 
     public GameLogic(CharacterType player, Image background){
         int startX = 100;
@@ -40,6 +42,17 @@ public class GameLogic {
         if(pipeManager.getPipes().isEmpty() || pipeManager.getPipes().get(pipeManager.getPipes().size()-1).getX() < boardWidth-200){
             pipeManager.spawnPipe();
         }
+
+        // ต้องการดึง Score ปัจจุบัน  เพื่อเทียบหาเปลี่ยนด่าน
+        /***
+         *         if (getScore() == 2) {
+            pipeManager.setPipeImages(
+            Theme.TopPipe_Water.pic(),
+            Theme.BottomPipe_Water.pic()
+        );
+        }*/
+
+
     }
 
     public boolean isGameOver(){
@@ -70,4 +83,6 @@ public class GameLogic {
     public Character getCharacter(){
         return character;
     }
+
+
 }
