@@ -1,12 +1,9 @@
-package Object;
+package FishSurvivalGame;
 
 public class Score {
     private int currentScore;
     private int highScore;
     private String playerName;
-    public Score(String playerName) {
-        this.playerName = playerName;
-    }
     public void Increment(){
 
     }
