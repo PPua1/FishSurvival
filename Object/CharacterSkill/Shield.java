@@ -1,35 +1,33 @@
 package Object.CharacterSkill;
-
+import Object.Character;
 import Lib.GameTimer;
+import Screen.GameScreen;
 
 public class Shield implements Skill{
-    private int cooldown = 30000;
-    private boolean active;
-    private long lastUsed;
+    private boolean active = false;
+    private boolean use = false; 
     
-
     @Override
-    public void activate(Character c) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'activate'");
+    public void activate(Character c, GameScreen g) {
+        if (!use) {
+            use = true;
+            active = true;
+            c.setShieldMode(true);
+        }
     }
-
     @Override
-    public void update(Character c, GameTimer t) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+    public void update(Character c, GameTimer t, GameScreen g) {
+        if (active && !c.isShield()) {
+           active = false; //สิ้นสุดการใช้งานเมื่อชนท่อ
+        }
     }
-
     @Override
     public boolean isAvailable() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isAvailable'");
+        return !use;
     }
-
     @Override
     public boolean isActive() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isActive'");
+        return active;
     }
     
 }
