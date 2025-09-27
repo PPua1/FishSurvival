@@ -1,35 +1,36 @@
 package Object;
 
 import java.awt.Image;
-
+import java.net.URL;
 import javax.swing.ImageIcon;
 
-public enum Theme {
-    Sea("Sea","/Asset/Sea.png"),
-    TopPipe_Sea("TopPipe_Sea","/Asset/Sea_Top.png"),
-    BottomPipe_Sea("BottomPipe_Sea","/Asset/Sea_Bottom.png"),
+public class Theme {
+    private String topPipePath;
+    private String bottomPipePath;
+    private ImageIcon topPipeIcon;
+    private ImageIcon bottomPipeIcon;
 
-    Water("Water","/Asset/Water.png"),
-    TopPipe_Water("TopPipe_Water","/Asset/Water_TopPipe.png"),
-    BottomPipe_Water("BottomPipe_Water", "/Asset/Water_BottomPipe.png"),
-
-    Kitchen("Kitchen","/Asset/Kitchen.png"),
-    TopPipe_Kitchen("TopPipe_Kitchen","/Asset/Fork_Top.png"),
-    BottomPipe_Kitchen("BottomPipe_Kitchen","/Asset/Spoon_Bottom.png");
-
-    private String imagePath;
-    private String name;
-    private ImageIcon Pic;
-
-    Theme(String name,String imagePath){
-        this.name = name;
-        this.imagePath = imagePath;
-        this.Pic = new ImageIcon(getClass().getResource(imagePath));
+    public Theme(String topPipePath, String bottomPipePath) {
+        this.topPipePath = topPipePath;
+        this.bottomPipePath = bottomPipePath;
     }
 
-    public Image pic(){
-        return Pic.getImage();
+    public Image getTopPipeImage() {
+        if (topPipeIcon == null) topPipeIcon = loadImage(topPipePath);
+        return topPipeIcon != null ? topPipeIcon.getImage() : null;
     }
 
-    
+    public Image getBottomPipeImage() {
+        if (bottomPipeIcon == null) bottomPipeIcon = loadImage(bottomPipePath);
+        return bottomPipeIcon != null ? bottomPipeIcon.getImage() : null;
+    }
+
+    private ImageIcon loadImage(String path) {
+        URL url = getClass().getResource(path);
+        if (url == null) {
+            System.err.println("ไม่พบไฟล์: " + path);
+            return null;
+        }
+        return new ImageIcon(url);
+    }
 }

@@ -10,12 +10,9 @@ public class Character {
     private boolean isAlive = true;
     private boolean isJumping = false;
 
-    private boolean shieldMode = false;
-    private boolean ghostMode = false;
-
     private static final int Gravity = 1; //แรงโน้มถ่วงเป็น1
     private static final int Jump =  -10 ; //ความเร็วตอนกระโดด
-    private static final int Character_Size = 60;
+    private static final int Character_Size = 40;
     public Character(int x, int y , CharacterType type){
         this.x = x;
         this.y = y;
@@ -55,20 +52,12 @@ public class Character {
         if (y <= 0) {
             y = 0;
             speedY = 0;
-            collide();
+            
         }
     }
 
     //ชนแล้วตาย
     public void collide(){
-        if (ghostMode) {
-            return;
-        }
-        if (shieldMode) {
-        shieldMode = false; // ใช้เกราะบล็อคได้ครั้งเดียว
-        return;             // ไม่ตาย!
-        }
-
         this.isAlive = false;
 
     }
@@ -100,20 +89,6 @@ public class Character {
     public void setY(int y){ this.y = y; }
     public void setAlive(boolean alive){ this.isAlive = alive; }
 
-    public void setGhostMode(boolean ghost){
-        this.ghostMode = ghost;
-    }
-    public boolean  isGhost(){
-        return ghostMode;
-
-    }
-    public void setShieldMode(boolean shield){
-        this.shieldMode = shield;
-    }
-    public boolean  isShield(){
-        return shieldMode;
-
-    }
 
 }
 
