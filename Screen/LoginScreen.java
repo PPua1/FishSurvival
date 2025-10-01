@@ -86,7 +86,7 @@ public class LoginScreen extends Screen {
             g.drawImage(backgroundImg, 0, 0, getWidth(), getHeight(), null);
         }
 
-        // วาดกล่องโปร่งแสงเอง (เหมือนเป็นพื้นหลังของ formPanel)
+        // วาดกล่องโปร่งแสง
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(new Color(255, 255, 255, 180)); // สีขาวโปร่งแสง
         g2.fillRoundRect(80, 250, 200, 160, 25, 25);

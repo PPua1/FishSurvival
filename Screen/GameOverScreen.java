@@ -1,4 +1,258 @@
+// package Screen;
+// import Lib.ScoreEntry;
+// import Object.CharacterType;
+// import java.awt.*;
+// import java.awt.event.*;
+// import java.util.ArrayList;
+// import javax.swing.*;
+
+// public class GameOverScreen extends Screen {
+//     private int finalScore;
+//     private int highScore;
+//     private ArrayList<ScoreEntry> highScores;
+//     private String playerName;
+//     private CharacterType player;
+//     private Image backgroundImg;
+    
+
+//     public GameOverScreen(App app, int finalScore, int highScore, ArrayList<ScoreEntry> highScores,String playerName,CharacterType player) {
+//         super(app);
+//         this.finalScore = finalScore;
+//         this.highScore = highScore;
+//         this.highScores = highScores;
+//         this.playerName = playerName;
+//         this.player = player;
+        
+
+//         initial(); // เรียกเมธอดสร้าง UI
+//     }
+
+    
+
+//     @Override
+//     protected void initial() {
+//         setLayout(null);
+
+//         // Game Over label
+//         JLabel gameOverLabel = new JLabel("Game Over");
+//         gameOverLabel.setFont(new Font("SanSerif",Font.BOLD,40));;
+//         gameOverLabel.setForeground(Color.RED);
+//         gameOverLabel.setBounds(70, 50, 658, 80);
+//         add(gameOverLabel);
+
+//         // Score
+//         JLabel scoreLabel = new JLabel("Score : " + finalScore);
+//         scoreLabel.setBounds(130, 130, 200, 30);
+//         add(scoreLabel);
+
+//         JLabel highScoreLabel = new JLabel("High Score : " + highScore);
+//         highScoreLabel.setBounds(130, 170, 200, 30);
+//         add(highScoreLabel);
+
+//         // Retry Button
+//         JButton retryButton = new JButton("Play Again");
+//         retryButton.setBounds(100, 240, 160, 40);
+//         retryButton.addActionListener(e->onRetryClicked());
+//         add(retryButton);
+
+//         // Menu Button
+//         JButton menuButton = new JButton("Menu");
+//         menuButton.setBounds(100, 300, 160, 40);
+//         menuButton.addActionListener(e -> onMenuClicked());
+//         add(menuButton);
+
+
+//         // Score Board
+//         JLabel boardLabel = new JLabel("Score Board");
+//         boardLabel.setBounds(145, 360, 200, 30);
+//         add(boardLabel); 
+
+//         JPanel scoreBoardPanel = new JPanel() {
+//             @Override
+//             protected void paintComponent(Graphics g) {
+//                 super.paintComponent(g);
+//                 Graphics2D g2 = (Graphics2D) g.create();
+//                 g2.setColor(Color.WHITE); // สีขาวทึบ
+//                 g2.fillRoundRect(0, 0, getWidth(), getHeight(), 25, 25); // กรอบขอบมน
+//                 g2.dispose();
+//             }
+//         };
+//         scoreBoardPanel.setOpaque(false);
+//         scoreBoardPanel.setLayout(null); // ใช้ absolute layout
+//         scoreBoardPanel.setBounds(55, 360, 250, 230);
+//         add(scoreBoardPanel); 
+//         // เพิ่มคะแนนของผู้เล่นปัจจุบันเข้าไปใน highScores
+//         ScoreEntry newEntry = new ScoreEntry(playerName, finalScore);
+//         highScores.add(newEntry);
+
+//         // เรียงลำดับคะแนนจากมากไปน้อย
+//         highScores.sort((a, b) -> b.getScore() - a.getScore());
+
+//         // เก็บไว้แค่ top 5 
+//         if (highScores.size() > 5) {
+//           highScores = new ArrayList<>(highScores.subList(0, 5));
+//     }
+
+
+        
+
+//         int y = 360;
+//         if (highScores != null) {
+//         for (ScoreEntry entry : highScores) {
+//             JLabel entryLabel = new JLabel(entry.getName() + " - " + entry.getScore());
+//             entryLabel.setBounds(120, y, 250, 25);
+//             add(entryLabel);
+//             scoreBoardPanel.add(entryLabel);
+//             y += 30;
+//             }
+//         } 
+//     }
+    
+
+//     private void onRetryClicked() {
+//         GameScreen gameScreen = new GameScreen(app, playerName, player, finalScore);
+        
+//         SwingUtilities.invokeLater(() -> {
+//             app.setScreen(gameScreen);
+//         });
+        
+//         //app.setScreen(gameScreen);
+//         //String playerName = null;
+//                // app.setScreen(new GameScreen(app, playerName, player)); // เปลี่ยนไปหน้าเล่นเกมใหม่
+                
+//     }
+//     private void onMenuClicked() {
+//         MenuScreen menuScreen = new MenuScreen(app, playerName, player);
+//         app.setScreen(menuScreen);
+//        // app.setScreen(new MenuScreen(app, null, null)); // กลับเมนูหลัก
+//     }
+    
+//     @Override
+//     public void draw(Graphics g) {
+        
+//             backgroundImg = new ImageIcon(getClass().getResource("/Asset/Sea.png")).getImage();
+//             g.drawImage(backgroundImg, 0, 0, getWidth(), getHeight(), null);
+//     }
+
+//     @Override
+//     public void update() {
+//         // TODO Auto-generated method stub
+//        // throw new UnsupportedOperationException("Unimplemented method 'update'");
+//     }
+
+//     @Override
+//     public void handleInput(KeyEvent e) {
+//         // TODO Auto-generated method stub
+//        // throw new UnsupportedOperationException("Unimplemented method 'handleInput'");
+//     }
+// }
+
+// package Screen;
+
+// import Lib.GameLogic;
+// import Object.*;
+// import Object.Character;
+// import java.awt.*;
+// import java.awt.event.KeyAdapter;
+// import java.awt.event.KeyEvent;
+// import java.util.ArrayList;
+
+// import javax.swing.ImageIcon;
+
+// public class GameOverScreen extends Screen {
+//     private GameLogic logic;
+//     private Character character;
+//     private CharacterType player;
+//     private Score score;
+//     private String playerName;
+//     private App app;
+//     private int finalScore;
+
+//     public GameOverScreen(App app, String playerName, CharacterType player, int finalScore) {
+//         super(app);
+
+//         // 1. กำหนดค่าพื้นฐาน
+//         this.app = app;
+//         this.player = player;
+//         this.playerName = playerName;
+//         this.finalScore = finalScore;
+//         this.score = new Score(playerName);
+
+//         // 2. สร้าง logic ก่อน แล้วดึง character
+//         Image bg = new ImageIcon(getClass().getResource("/Asset/Sea.png")).getImage();
+//         logic = new GameLogic(player, bg);
+//         character = logic.getCharacter();
+
+//         // 3. ตั้งค่า focus และ key listener
+//         setFocusable(true);
+//         requestFocusInWindow();
+//         addKeyListener(new KeyAdapter() {
+//             @Override
+//             public void keyPressed(KeyEvent e) {
+//                 handleInput(e);
+//             }
+//         });
+
+//         // 4. ตรวจสอบ character
+//         if (character != null && !character.isAlive()) {
+//             app.setScreen(new GameScreen(app, 0, 0, null, playerName, player));
+//         }
+
+//         // 5. เริ่ม initial
+//         initial();
+//     }
+
+//     @Override
+//     protected void initial() {
+//         if (logic != null) logic.reset();
+
+//         ArrayList<Pipe> pipes = logic.pipeManager.getPipes(); // ใช้ pipes ของ logic
+//         if (pipes != null) {
+//             for (Pipe pipe : pipes) {
+//                 if (!pipe.isPassed() && character.getX() > pipe.getX() + pipe.getWidth()) {
+//                     score.increment();
+//                     pipe.setPassed(true);
+//                 }
+//             }
+//         }
+
+//         if (character != null) character.setAlive(true);
+//     }
+
+//     @Override
+//     public void draw(Graphics g) {
+//         if (logic.getBackground() != null)
+//             g.drawImage(logic.getBackground(), 0, 0, getWidth(), getHeight(), null);
+
+//         logic.drawCharacter(g);
+//         logic.drawPipes(g);
+
+//         g.setColor(Color.BLACK);
+//         g.setFont(new Font("Arial", Font.BOLD, 20));
+//         g.drawString("Score: " + score.getCurrentScore(), 20, 40);
+//     }
+
+//     @Override
+//     public void update() {
+//             // logic.update();
+//             // if (!character.isAlive())
+//             //     app.setScreen(new GameOverScreen(app, "", player, finalScore));
+//     }
+
+//     @Override
+//     public void handleInput(KeyEvent e) {
+//     //     if (e.getKeyCode() == KeyEvent.VK_SPACE && character != null && character.isAlive())
+//     //         logic.characterJump();
+//     }
+
+//     public boolean isGameOver() {
+//         return character != null && !character.isAlive();
+//     }
+// }
+
 package Screen;
+
+import Object.CharacterType;
 import Lib.ScoreEntry;
 import java.awt.*;
 import java.awt.event.*;
@@ -9,56 +263,89 @@ public class GameOverScreen extends Screen {
     private int finalScore;
     private int highScore;
     private ArrayList<ScoreEntry> highScores;
+    private String playerName;
+    private CharacterType player;
+    private App app;
+    private Image backgroundImg;
 
-    public GameOverScreen(App app, int finalScore, int highScore, ArrayList<ScoreEntry> highScores) {
+    public GameOverScreen(App app, String playerName, CharacterType player, int finalScore) {
         super(app);
+        this.app = app;
         this.finalScore = finalScore;
-        this.highScore = highScore;
-        this.highScores = highScores;
 
-        initial(); // เรียกเมธอดสร้าง UI
-    }
+        this.highScores = highScores != null ? highScores : new ArrayList<>();
+        this.playerName = playerName;
+        this.player = player;
 
-    public GameOverScreen(App app) {
-        super(app);
+        initial();
     }
 
     @Override
     protected void initial() {
         setLayout(null);
 
-        // Game Over label
+        /// Game Over label
         JLabel gameOverLabel = new JLabel("Game Over");
         gameOverLabel.setFont(new Font("SanSerif",Font.BOLD,40));;
         gameOverLabel.setForeground(Color.RED);
-        gameOverLabel.setBounds(100, 30, 300, 50);
+        gameOverLabel.setBounds(70, 50, 658, 80);
         add(gameOverLabel);
 
         // Score
         JLabel scoreLabel = new JLabel("Score : " + finalScore);
-        scoreLabel.setBounds(120, 100, 200, 30);
+        scoreLabel.setBounds(130, 130, 200, 30);
         add(scoreLabel);
 
         JLabel highScoreLabel = new JLabel("High Score : " + highScore);
-        highScoreLabel.setBounds(120, 140, 200, 30);
+        highScoreLabel.setBounds(130, 170, 200, 30);
         add(highScoreLabel);
 
         // Retry Button
         JButton retryButton = new JButton("Play Again");
-        retryButton.setBounds(120, 200, 160, 40);
+        retryButton.setBounds(100, 240, 160, 40);
         retryButton.addActionListener(e->onRetryClicked());
         add(retryButton);
 
         // Menu Button
         JButton menuButton = new JButton("Menu");
-        menuButton.setBounds(120, 260, 160, 40);
+        menuButton.setBounds(100, 300, 160, 40);
         menuButton.addActionListener(e -> onMenuClicked());
         add(menuButton);
 
+
         // Score Board
         JLabel boardLabel = new JLabel("Score Board");
-        boardLabel.setBounds(120, 320, 200, 30);
-        add(boardLabel);
+        boardLabel.setBounds(145, 360, 200, 30);
+        add(boardLabel); 
+
+        JPanel scoreBoardPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setColor(Color.WHITE); // สีขาวทึบ
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 25, 25); // กรอบขอบมน
+                g2.dispose();
+            }
+        };
+        scoreBoardPanel.setOpaque(false);
+        scoreBoardPanel.setLayout(null); // ใช้ absolute layout
+        scoreBoardPanel.setBounds(55, 360, 250, 230);
+        add(scoreBoardPanel); 
+        // เพิ่มคะแนนของผู้เล่นปัจจุบันเข้าไปใน highScores
+        ScoreEntry newEntry = new ScoreEntry(playerName, finalScore);
+        highScores.add(newEntry);
+
+        // เรียงลำดับคะแนนจากมากไปน้อย
+        highScores.sort((a, b) -> b.getScore() - a.getScore());
+
+        // เก็บไว้แค่ top 5 
+        if (highScores.size() > 5) {
+          highScores = new ArrayList<>(highScores.subList(0, 5));
+    }
+
+
+        
 
         int y = 360;
         if (highScores != null) {
@@ -66,37 +353,45 @@ public class GameOverScreen extends Screen {
             JLabel entryLabel = new JLabel(entry.getName() + " - " + entry.getScore());
             entryLabel.setBounds(120, y, 250, 25);
             add(entryLabel);
+            scoreBoardPanel.add(entryLabel);
             y += 30;
-        }
+            }
+        } 
     }
-}
 
     private void onRetryClicked() {
-        app.setScreen(new GameScreen(app, "", null)); // เปลี่ยนไปหน้าเล่นเกมใหม่
+        GameScreen gameScreen = new GameScreen(app, playerName, player, finalScore);
+        
+        SwingUtilities.invokeLater(() -> {
+            app.setScreen(gameScreen);
+        });
+        
+        //app.setScreen(gameScreen);
+        //String playerName = null;
+               // app.setScreen(new GameScreen(app, playerName, player)); // เปลี่ยนไปหน้าเล่นเกมใหม่
+                
     }
     private void onMenuClicked() {
-        app.setScreen(new MenuScreen(app, null, null)); // กลับเมนูหลัก
+        MenuScreen menuScreen = new MenuScreen(app, playerName, player);
+        app.setScreen(menuScreen);
+       // app.setScreen(new MenuScreen(app, null, null)); // กลับเมนูหลัก
     }
-
-
+    
     @Override
     public void draw(Graphics g) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'draw'");
+        backgroundImg = new ImageIcon(getClass().getResource("/Asset/Sea.png")).getImage();
+        if (backgroundImg != null) {
+            g.drawImage(backgroundImg, 0, 0, getWidth(), getHeight(), null);
+        }
     }
 
     @Override
     public void update() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        // GameOverScreen ไม่ต้องอัปเดตอะไร
     }
 
     @Override
     public void handleInput(KeyEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'handleInput'");
+        // GameOverScreen ไม่มี input สำหรับ character
     }
-    
-   
-   
 }

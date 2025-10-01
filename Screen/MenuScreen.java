@@ -1,17 +1,15 @@
 package Screen;
 
-import javax.swing.*;
-
 import Object.CharacterType;
-
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.*;
 
 public class MenuScreen extends Screen {
     private JButton playButton;
     private JButton characterButton;
     private Image backgroundImg;
-    private CharacterType selectedCharacter;
+    private final CharacterType selectedCharacter;
 
     public MenuScreen(App app, String playerName, CharacterType selectedCharacter) {
         super(app);
@@ -54,7 +52,7 @@ public class MenuScreen extends Screen {
 
         // ปุ่มกดแล้วทำงาน
         playButton.addActionListener(e -> {
-            app.setScreen(new GameScreen(app, "", selectedCharacter));
+            app.setScreen(new GameScreen(app, "", selectedCharacter,0));
         });
 
         characterButton.addActionListener(e -> {
@@ -91,7 +89,7 @@ public class MenuScreen extends Screen {
 
     @Override
     public void update() {
-        // ไม่ต้อง update อะไรในเมนู
+     
     }
 
     @Override

@@ -12,7 +12,7 @@ public class Character {
 
     private static final int Gravity = 1; //แรงโน้มถ่วงเป็น1
     private static final int Jump =  -10 ; //ความเร็วตอนกระโดด
-    private static final int Character_Size = 60;
+    private static final int Character_Size = 40;
     public Character(int x, int y , CharacterType type){
         this.x = x;
         this.y = y;
@@ -52,7 +52,7 @@ public class Character {
         if (y <= 0) {
             y = 0;
             speedY = 0;
-            collide();
+            
         }
     }
 

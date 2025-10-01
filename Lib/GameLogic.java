@@ -1,147 +1,97 @@
-// // package Lib;
-// // import java.awt.*;
-// // import java.util.*;
-// // import java.util.List;
-
-// // import Object.*;
-// // import Object.Character;
-
-// // public class GameLogic {
-// //     private GameState gameState;
-// //     private int difficult;
-// //     private Random random;
-
-// //     public GameLogic(int difficult){
-// //         this.difficult = difficult;
-// //         this.random = new Random();
-
-// //     }
-    
-// //     public boolean checkCollisoin(Character c , List<Pipe> pipes){
-// //         for (Pipe pipe : pipes) {
-// //             Rectangle[] bounds = pipe.getBounds();
-// //             for (Rectangle rect : bounds) {
-// //                 if (c.getBounds().intersects(rect)) {
-// //                     return true;
-// //                 }
-// //             }
-// //         }
-// //         return false;
-// //     }
-// //     public void updateScore(Character c , List<Pipe> pipes, Score score){
-// //         for (Pipe pipe : pipes) {
-// //             if (!pipe.getPassed() && pipe.isPassed(c)) {
-// //                 pipe.setPassed(true);
-// //                 score.increment();    // เพิ่มคะแนน
-// //             }
-// //         }
-
-// //     }
-// //     public boolean isGameOver(Character c, List<Pipe> pipes, int screenHeight){
-// //         if (!c.isAlive()) return true;
-// //         if (c.getY() < 0 || c.getY() + c.getHeight() > screenHeight) return true;
-// //         if (checkCollisoin(c, pipes)) return true;
-// //         return false;
-// //     }
-
-// //     // กำหนดช่องว่างระหว่างท่อ
-// //     public int generatePipeGap() {
-// //         return difficult;
- 
-        
-// //     }
-
-// //     // สุ่มความสูงท่อด้านบน
-// //     public int getRandomPipeHeight(int minHeight, int maxHeight) {
-// //         return random.nextInt(maxHeight - minHeight) + minHeight;
-// //     }
-
-
-// //     // สร้าง Pipe ใหม่ พร้อม ThemeSet
-// //     public Pipe createPipe(int startX, int width, ThemeSet theme) {
-// //         int gap = generatePipeGap();
-// //         int topHeight = getRandomPipeHeight(50, 300);
-// //         return new Pipe(startX, width, topHeight, gap, theme.getTopPipe(), theme.getBottomPipe());
-// //     }
-
-
-// // }
-
 // package Lib;
 
-// import Object.*;
 // import java.awt.*;
-// import java.util.List;
-// import java.util.Random;
+// import java.util.ArrayList;
+// import Object.*;
 // import Object.Character;
 
 // public class GameLogic {
-//     private int difficult;
-//     private Random random;
+//     private Character character;
+//     public PipeManager pipeManager;
+//     private Image backgroundImg;
+//     private int boardWidth = 360;
+//     private int boardHeight = 640;
+//     private int score;
+//     private String playerName;
 
-//     public GameLogic(int difficult){
-//         this.difficult = difficult;
-//         this.random = new Random();
+//     // Theme สำหรับเปลี่ยนท่อ
+//     private Theme seaTheme = new Theme("/Asset/Sea_Top.png", "/Asset/Sea_Bottom.png");
+//     private Theme waterTheme = new Theme("/Asset/Water_TopPipe.png", "/Asset/Water_BottomPipe.png");
+//     private Theme KitchenTheme = new Theme("/Asset/Spoon_Top.png", "/Asset/Fork_Bottom.png");
+
+//     public GameLogic(CharacterType player, Image background) {
+//         int startX = 100;
+//         int startY = 340;
+//         this.character = new Character(100, 340, player);
+//         this.backgroundImg = background;
+//         this.pipeManager = new PipeManager(KitchenTheme);
 //     }
 
-//     // ตรวจสอบการชน
-//     public boolean checkCollision(Character c , List<Pipe> pipes){
+//     public void update() {
+//         if (character != null && character.isAlive())
+//         {
+//             character.update();
+//         } 
+//         else return;
+
+//         pipeManager.movePipes();
+
+//         if (pipeManager.checkCollision(character.getBounds())) {
+//             character.setAlive(false);
+//         }
+
+//         if (pipeManager.getPipes().isEmpty() || pipeManager.getPipes().get(pipeManager.getPipes().size() - 1).getX() < boardWidth - 200) {
+//             pipeManager.spawnPipe();
+//         }
+
+//         // เปลี่ยนธีมตาม score
+//         // if (score >= 2) { // ตัวอย่าง
+//         //     pipeManager.setTheme(waterTheme);
+//         // }
+//     }
+
+//     public boolean isGameOver() {
+//         return !character.isAlive();
+//     }
+
+//     public void characterJump() {
+//         if (character.isAlive()) character.jump();
+//     }
+
+//     public void drawCharacter(Graphics g) {
+//         if (character != null) character.draw(g);
+//     }
+
+//     public void drawPipes(Graphics g) {
+//         ArrayList<Pipe> pipes = pipeManager.getPipes();
 //         for (Pipe pipe : pipes) {
-//             Rectangle[] bounds = pipe.getBounds();
-//             for (Rectangle rect : bounds) {
-//                 if (c.getBounds().intersects(rect)) {
-//                     return true;
-//                 }
-//             }
-//         }
-//         return false;
-//     }
-
-//     // อัปเดตคะแนน
-//     public void updateScore(Character c , List<Pipe> pipes, Score score){
-//         for (Pipe pipe : pipes) {
-//             if (!pipe.getPassed() && pipe.isPassed(c)) {
-//                 pipe.setPassed(true);
-//                 score.Increment();    // เพิ่มคะแนน
-//             }
+//             g.drawImage(pipe.getImage(), pipe.getX(), pipe.getY(), pipe.getBounds()[0].width, pipe.getBounds()[0].height, null);
 //         }
 //     }
 
-//     // ตรวจสอบ Game Over
-//     public boolean isGameOver(Character c, List<Pipe> pipes, int screenHeight){
-//         if (!c.isAlive()) return true;
-//         if (c.getY() < 0 || c.getY() + c.getHeight() > screenHeight) return true;
-//         if (checkCollision(c, pipes)) return true;
-//         return false;
+//     public Image getBackground() {
+//         return backgroundImg;
 //     }
 
-//     // กำหนดช่องว่างระหว่างท่อ
-//     public int generatePipeGap() {
-//         switch (difficult) {
-//             case 1: return 150;
-//             case 2: return 120;
-//             case 3: return 100;
-//             default: return 120;
-//         }
+//     public Character getCharacter() {
+//         return character;
 //     }
 
-//     // สุ่มความสูงท่อด้านบน
-//     public int getRandomPipeHeight(int minHeight, int maxHeight) {
-//         return random.nextInt(maxHeight - minHeight) + minHeight;
+//     public int getScore() {
+//         return score;
 //     }
 
-//     // สร้าง Pipe ใหม่ พร้อม ThemeSet
-//     public Pipe createPipe(int startX, int width, ThemeSet theme) {
-//         int gap = generatePipeGap();
-//         int topHeight = getRandomPipeHeight(50, 300);
-//         return new Pipe(startX, width, topHeight, gap, theme.getTopPipe(), theme.getBottomPipe());
+//     public void setScore(int score) {
+//         this.score = score;
 //     }
-// }
 
-// public class GameLogic{
-//     int velocityX = -4;
-//     int velocityY = 0;
-//     int Gravity = 1;
+//     public void reset() {
+//         character.setAlive(true);
+//         character.setX(100);
+//         character.setY(340);
+//         pipeManager.clearPipes();
+//         score = 0;
+//     }
 // }
 
 package Lib;
@@ -149,69 +99,113 @@ package Lib;
 import java.awt.*;
 import java.util.ArrayList;
 
-import Object.CharacterType;
-import Object.PipeManager;
-import Object.Theme;
+import javax.swing.ImageIcon;
+
+import Object.*;
 import Object.Character;
-import Object.Pipe;
 
 public class GameLogic {
-    private Character character;
-    private PipeManager pipeManager;
+    public Character character;
+    public PipeManager pipeManager;
     private Image backgroundImg;
     private int boardWidth = 360;
     private int boardHeight = 640;
+    private Score score;
+    private String playerName;
 
-    public GameLogic(CharacterType player, Image background){
-        int startX = 100;
-        int startY = 340;
-        this.character = new Character(startX, startY, player);
+    // Theme สำหรับเปลี่ยนท่อ
+    private Theme seaTheme = new Theme("/Asset/Sea_Top.png", "/Asset/Sea_Bottom.png");
+    private Theme waterTheme = new Theme("/Asset/Water_TopPipe.png", "/Asset/Water_BottomPipe.png");
+    private Theme KitchenTheme = new Theme("/Asset/Spoon_Top.png", "/Asset/Fork_Bottom.png");
+
+    private Theme[] themes;
+    private String[] backgrounds;
+
+    public GameLogic(CharacterType player, Image background, String playerName) {
+        this.character = new Character(100, 340, player);
         this.backgroundImg = background;
-        this.pipeManager = new PipeManager(Theme.TopPipe_Sea.pic(), Theme.BottomPipe_Sea.pic());
+        this.pipeManager = new PipeManager(seaTheme);
+        this.playerName = playerName;
+        this.score = new Score(playerName);
+
+        themes = new Theme[]{seaTheme, waterTheme, KitchenTheme};
+        backgrounds = new String[]{"/Asset/Sea.png", "/Asset/Water.png", "/Asset/Kitchen.png"};
     }
 
-    public void update(){
-        if(character != null && character.isAlive()){
+
+    public void update() {
+        if (character != null && character.isAlive()) {
             character.update();
-        } else { return; }
+        } else return;
 
         pipeManager.movePipes();
 
-        if(pipeManager.checkCollision(character.getBounds())){
+        // ตรวจสอบชนท่อ
+        if (pipeManager.checkCollision(character.getBounds())) {
             character.setAlive(false);
         }
 
-        if(pipeManager.getPipes().isEmpty() || pipeManager.getPipes().get(pipeManager.getPipes().size()-1).getX() < boardWidth-200){
+        // spawn pipe ใหม่ถ้าจำเป็น
+        ArrayList<Pipe> pipes = pipeManager.getPipes();
+        if (pipes.isEmpty() || pipes.get(pipes.size() - 1).getX() < boardWidth - 200) {
             pipeManager.spawnPipe();
         }
+
+        // เพิ่มคะแนนเมื่อผ่านท่อ
+        for (Pipe pipe : pipes) {
+            if (!pipe.isPassed() && character.getX() > pipe.getX() + pipe.getWidth()) {
+                if (score != null) score.increment();
+                pipe.setPassed(true);
+            }
+        }
+
+        //เปลี่ยนธีมตาม score
+        // เปลี่ยนธีมตามคะแนนจาก Score object
+        int themeIndex = (score.getCurrentScore() / 20) % themes.length;
+        backgroundImg = new ImageIcon(getClass().getResource(backgrounds[themeIndex])).getImage();
+        pipeManager.setTheme(themes[themeIndex]);
     }
 
-    public boolean isGameOver(){
-        return !character.isAlive();
+    public void characterJump() {
+        if (character != null && character.isAlive()) character.jump();
     }
 
-    public void characterJump(){
-        if(character.isAlive()) character.jump();
+    public void drawCharacter(Graphics g) {
+        if (character != null) character.draw(g);
     }
 
-    // วาด character
-    public void drawCharacter(Graphics g){
-        if(character != null) character.draw(g);
-    }
-
-    // วาดท่อ
-    public void drawPipes(Graphics g){
+    public void drawPipes(Graphics g) {
         ArrayList<Pipe> pipes = pipeManager.getPipes();
-        for(Pipe pipe : pipes){
-            g.drawImage(pipe.getImage(), pipe.getX(), pipe.getY(), pipe.getBounds()[0].width, pipe.getBounds()[0].height, null);
+        for (Pipe pipe : pipes) {
+            g.drawImage(pipe.getImage(), pipe.getX(), pipe.getY(),
+                    pipe.getBounds()[0].width, pipe.getBounds()[0].height, null);
         }
     }
 
-    public Image getBackground(){
+    public Image getBackground() {
         return backgroundImg;
     }
 
-    public Character getCharacter(){
+    public boolean isGameOver() {
+        return character == null || !character.isAlive();
+    }
+
+    public Character getCharacter() {
         return character;
     }
+    
+    public Score getScore() {
+        return score;
+    }
+
+    public void reset() {
+        if (character != null) {
+            character.setAlive(true);
+            character.setX(100);
+            character.setY(340);
+        }
+        if (pipeManager != null) pipeManager.clearPipes();
+        if (score != null) score.reset();
+    }
+
 }
