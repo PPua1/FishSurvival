@@ -29,5 +29,15 @@ public class Shield implements Skill{
     public boolean isActive() {
         return active;
     }
+    @Override
+    public void activate(java.lang.Character c, GameScreen g) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'activate'");
+    }
+    @Override
+    public void update(java.lang.Character c, GameTimer t, GameScreen g) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'update'");
+    }
     
 }

@@ -1,8 +1,5 @@
 package Lib;
 public class ScoreEntry {
-
-    
-    
     private String name;
     private int score;
     
