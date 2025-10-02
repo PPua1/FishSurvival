@@ -1,4 +1,7 @@
 package Object;
+import Lib.GameTimer;
+import Object.CharacterSkill.Skill;
+import Screen.GameScreen;
 import java.awt.*;
 
 public class Character {
@@ -10,6 +13,10 @@ public class Character {
     private boolean isAlive = true;
     private boolean isJumping = false;
 
+    private Skill skill;
+    private boolean ghostMode = false;
+    private boolean shieldMode = false;
+
     private static final int Gravity = 1; //แรงโน้มถ่วงเป็น1
     private static final int Jump =  -10 ; //ความเร็วตอนกระโดด
     private static final int Character_Size = 40;
@@ -18,6 +25,39 @@ public class Character {
         this.y = y;
         this.characterType = type ; 
         this.icon = type.getCharacterImage();
+    }
+    public void setSkill(Skill skill){
+        this.skill = skill;
+    } 
+    public Skill getSkill(){
+        return this.skill;
+    }
+    public void useSkill(GameScreen g){
+        if (skill != null && skill.isAvailable()) {
+            skill.activate(this, g);
+        }
+    }
+    public void updateSkill(GameTimer timer, GameScreen g){
+        if (skill != null && skill.isActive()) {
+            skill.update(this, timer, g);
+        }
+    }
+    public boolean isGhost(){
+        return ghostMode;
+    }
+    public void setGhostMode(boolean ghost){
+        this.ghostMode = ghost;
+    }
+    public boolean isShield(){
+        return shieldMode;
+    }
+    public void setShieldMode(boolean shield){
+        this.shieldMode = shield;
+    }
+    public void resetSkill(){
+        if (skill!= null) {
+            skill.reset();
+        }
     }
     public void Reset(int startX, int startY){
         this.x = startX;
@@ -64,14 +104,18 @@ public class Character {
 
     public void draw(Graphics g){
 
+        int imgWidth = 60;  // ขนาดภาพตัวละคร
+        int imgHeight = 60;
+        int w = 0, h = 0;
         if (icon != null) {
-                int imgWidth = 60;  // ขนาดภาพตัวละคร
-                int imgHeight = 60;
                 double scale = Math.min((double) imgWidth / icon.getWidth(null),
                                         (double) imgHeight / icon.getHeight(null));
-                int w = (int) (icon.getWidth(null) * scale);
-                int h = (int) (icon.getHeight(null) * scale);
-
+                w = (int) (icon.getWidth(null) * scale);
+                h = (int) (icon.getHeight(null) * scale);
+            }
+            if (skill != null && skill.isActive()) {
+                skill.drawEffect(g, x, y);
+            }else if (icon != null) {
                 g.drawImage(icon, x, y, w, h, null);
             }
     }

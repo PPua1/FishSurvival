@@ -74,4 +74,10 @@ public class PipeManager {
     public void clearPipes(){
         pipes.clear();
     }
+    public int getPipeSpeed(){
+        return velocityX;
+    }
+    public void setVelocityX(int velocityX){
+        this.velocityX = velocityX;
+    }
 }

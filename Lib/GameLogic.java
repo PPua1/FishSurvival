@@ -1,12 +1,17 @@
 package Lib;
 
-import java.awt.*;
-import java.util.ArrayList;
-
-import javax.swing.ImageIcon;
-
 import Object.*;
 import Object.Character;
+import Object.CharacterSkill.Ghost;
+import Object.CharacterSkill.Shield;
+import Object.CharacterSkill.Skill;
+import Object.CharacterSkill.Slow;
+import Object.CharacterSkill.dash;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.ImageIcon;
 
 public class GameLogic {
     public Character character;
@@ -25,6 +30,15 @@ public class GameLogic {
     private Theme[] themes;
     private String[] backgrounds;
 
+    //สร้างskillmapสำหรับแต่ละตัวละคร
+    private static final Map<CharacterType, Skill> skillMap = new HashMap<>();
+    static{
+        skillMap.put(CharacterType.GUK, new Shield());
+        skillMap.put(CharacterType.LUCY, null);
+        skillMap.put(CharacterType.PACHA, new Slow());
+        skillMap.put(CharacterType.Twitty, new Ghost());
+        skillMap.put(CharacterType.YOUNG, new dash());
+    }
     public GameLogic(CharacterType player, Image background, String playerName) {
         this.character = new Character(100, 340, player);
         this.backgroundImg = background;
@@ -32,6 +46,7 @@ public class GameLogic {
         this.playerName = playerName;
         this.score = new Score(playerName);
 
+        character.setSkill(skillMap.get(player));
         themes = new Theme[]{seaTheme, waterTheme, KitchenTheme};
         backgrounds = new String[]{"/Asset/Sea.png", "/Asset/Water.png", "/Asset/Kitchen.png"};
     }
@@ -46,8 +61,14 @@ public class GameLogic {
 
         // ตรวจสอบชนท่อ
         if (pipeManager.checkCollision(character.getBounds())) {
-            character.setAlive(false);
+            if(!character.isGhost()){
+                character.setAlive(false);
+            }
+            if (!character.isShield()) {
+                character.setAlive(false);
+            }
         }
+            
 
         // spawn pipe ใหม่ถ้าจำเป็น
         ArrayList<Pipe> pipes = pipeManager.getPipes();
@@ -107,6 +128,7 @@ public class GameLogic {
             character.setAlive(true);
             character.setX(100);
             character.setY(340);
+            character.resetSkill();
         }
         if (pipeManager != null) pipeManager.clearPipes();
         if (score != null) score.reset();
