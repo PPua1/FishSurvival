@@ -61,10 +61,7 @@ public class GameLogic {
 
         // ตรวจสอบชนท่อ
         if (pipeManager.checkCollision(character.getBounds())) {
-            if(!character.isGhost()){
-                character.setAlive(false);
-            }
-            if (!character.isShield()) {
+            if(!character.isGhost() && !character.isShield()){
                 character.setAlive(false);
             }
         }
