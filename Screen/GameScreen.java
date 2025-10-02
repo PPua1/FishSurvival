@@ -1,14 +1,12 @@
 package Screen;
 import Lib.GameLogic;
-import Lib.ScoreEntry;
+import Lib.GameTimer;
 import Object.*;
+import Object.Character;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-
 import javax.swing.ImageIcon;
-import Object.Character;
 
 public class GameScreen extends Screen {
     private GameLogic logic;
@@ -17,6 +15,9 @@ public class GameScreen extends Screen {
     private String playerName;
     private App app;
     private int finalScore;
+    private GameTimer gameTimer;
+    private boolean isCountdonw = false;
+    private long countdonwStartTime;
 
     public GameScreen(App app, String playerName, CharacterType player, int finalScore) {
         super(app);
@@ -37,8 +38,19 @@ public class GameScreen extends Screen {
             @Override
             public void keyPressed(KeyEvent e) { handleInput(e); }
         });
+        //เริ่มจับเวลาcountdonw
+        countdonwStartTime = System.currentTimeMillis();
+
+        gameTimer = new GameTimer(16,() ->{
+            update();
+            repaint();
+        });
+        gameTimer.start();
 
         initial();
+    }
+    public PipeManager getPipeManager(){
+        return logic.pipeManager;
     }
 
     @Override
@@ -67,8 +79,11 @@ public class GameScreen extends Screen {
 
     @Override
     public void handleInput(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_SPACE && character != null && character.isAlive())
+        if (e.getKeyCode() == KeyEvent.VK_SPACE && character != null && character.isAlive()){
             logic.characterJump();
+        }else if (e.getKeyCode() == KeyEvent.VK_F && character != null && character.isAlive()) {
+            character.useSkill(this);
+        }
     }
 
     public boolean isGameOver() {
@@ -77,15 +92,26 @@ public class GameScreen extends Screen {
 
     @Override
     public void update() {
+        if (!isCountdonw) {
+            long currentTime = System.currentTimeMillis();// updateเวลาปัจจุบัน
+            if (currentTime - countdonwStartTime >= 1000) {
+                isCountdonw = true;
+            } else {
+                return;
+            }
+        }
         if (logic != null) {
         logic.update();  
-    }
+        }
 
-        if (character != null && !character.isAlive()) {
-        int finalScore = logic.getScore().getCurrentScore();
-        app.setScreen(new GameOverScreen(app, playerName, player, finalScore));
+        if(character != null){
+            character.updateSkill(gameTimer, this);
+            if (!character.isAlive()) {
+            int finalScore = logic.getScore().getCurrentScore();
+            app.setScreen(new GameOverScreen(app, playerName, player, finalScore));
+            gameTimer.stop();
+            }
         }
     }
-
 
 }
