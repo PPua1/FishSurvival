@@ -9,7 +9,7 @@ public class PipeManager {
     private int boardWidth = 360;
     private int boardHeight = 640;
     private int gap = 150;
-    private int velocityX = -2;
+    private int velocityX = -1;
 
     private Theme currentTheme;
     private Random random;
@@ -48,6 +48,8 @@ public class PipeManager {
             pipe.setX(pipe.getX() + velocityX);
         }
         pipes.removeIf(pipe -> pipe.getX() + boardWidth < 0);
+
+        
     }
 
     public boolean checkCollision(Rectangle FishRect) {
@@ -74,6 +76,7 @@ public class PipeManager {
     public void clearPipes(){
         pipes.clear();
     }
+    
     public int getPipeSpeed(){
         return velocityX;
     }

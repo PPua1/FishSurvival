@@ -1,12 +1,15 @@
 package Screen;
 import Lib.GameLogic;
 import Lib.GameTimer;
+import Lib.ScoreEntry;
 import Object.*;
-import Object.Character;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+
+
 import javax.swing.ImageIcon;
+import Object.Character;
 
 public class GameScreen extends Screen {
     private GameLogic logic;
@@ -40,7 +43,6 @@ public class GameScreen extends Screen {
         });
         //เริ่มจับเวลาcountdonw
         countdonwStartTime = System.currentTimeMillis();
-
         gameTimer = new GameTimer(16,() ->{
             update();
             repaint();
@@ -71,7 +73,6 @@ public class GameScreen extends Screen {
 
         g.setColor(Color.BLACK);
         g.setFont(new Font("Arial", Font.BOLD, 20));
-        // ใช้ logic.score แทน
         g.drawString("Score: " + logic.getScore().getCurrentScore(), 20, 40);
     }
 
@@ -81,7 +82,7 @@ public class GameScreen extends Screen {
     public void handleInput(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_SPACE && character != null && character.isAlive()){
             logic.characterJump();
-        }else if (e.getKeyCode() == KeyEvent.VK_F && character != null && character.isAlive()) {
+        }else if(e.getKeyCode() == KeyEvent.VK_F && character != null && character.isAlive()) {
             character.useSkill(this);
         }
     }
@@ -92,26 +93,38 @@ public class GameScreen extends Screen {
 
     @Override
     public void update() {
+        // 1. Countdown ก่อนเริ่มเกม
         if (!isCountdonw) {
-            long currentTime = System.currentTimeMillis();// updateเวลาปัจจุบัน
+            long currentTime = System.currentTimeMillis();
             if (currentTime - countdonwStartTime >= 1000) {
                 isCountdonw = true;
-            } else {
+            } else return;
+        }
+
+        if (character != null) {
+            character.updateSkill(gameTimer, this); // อัพเดตสกิล
+            character.updateInvincible();           // อัพเดตเวลากระพริบ
+
+            // ถ้า character ตายแล้ว แต่ยัง invincible ให้กระพริบและหยุดท่อ
+            if (!character.isAlive() && character.isInvincible()) {
+                // ตัวละครกระพริบอยู่กับที่, pipeManager ไม่อัพเดต
+                return; // รอจนหมดเวลากระพริบ
+            }
+
+            // GameOver จริง ๆ
+            if (!character.isAlive() && !character.isInvincible()) {
+                int finalScore = logic.getScore().getCurrentScore();
+                gameTimer.stop();
+                app.setScreen(new GameOverScreen(app, playerName, player, finalScore));
                 return;
             }
         }
-        if (logic != null) {
-        logic.update();  
-        }
 
-        if(character != null){
-            character.updateSkill(gameTimer, this);
-            if (!character.isAlive()) {
-            int finalScore = logic.getScore().getCurrentScore();
-            app.setScreen(new GameOverScreen(app, playerName, player, finalScore));
-            gameTimer.stop();
-            }
+        // อัพเดต Logic ตามปกติ ถ้า character ยัง alive หรือไม่ได้กระพริบ
+        if (logic != null) {
+            logic.update();
         }
     }
+
 
 }
