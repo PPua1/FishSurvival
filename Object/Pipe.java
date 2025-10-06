@@ -6,7 +6,7 @@ import java.awt.Rectangle;
 public class Pipe {
     private int x;
     private int y;
-    private int width = 50;
+    private int width = 55;
     private int height = 300;
     private Image image;
     private boolean passed = false;

@@ -32,9 +32,10 @@ public class dash implements Skill{
             active = true;
             use = true;
             startTimer = System.currentTimeMillis();
+
             originalVelocityX = g.getPipeManager().getPipeSpeed();
-            g.getPipeManager().setVelocityX(originalVelocityX*2);//เร็วขึ้น2เท่าจากความเร็วเดิม
-            c.setGhostMode(true);//ปลาล่องหน
+            g.getPipeManager().setVelocityX(originalVelocityX*4);//เร็วขึ้น4เท่าจากความเร็วเดิม
+            c.setDashMode(true);
         }
     }
     @Override
@@ -42,14 +43,22 @@ public class dash implements Skill{
         if (active&& System.currentTimeMillis() - startTimer >= duration) {
             active = false;
             g.getPipeManager().setVelocityX(originalVelocityX);//คืนความเร็วท่อ
-            c.setGhostMode(false);
+            c.setDashMode(false);
+            c.setInvincible(3000);
         }
     }
 
     @Override
     public void drawEffect(Graphics g, int x, int y){
         if (active && effectImage != null) {
-            g.drawImage(effectImage, x, y, 50, 50, null);
+            int imgWidth = 50;  // ขนาดภาพตัวละคร
+            int imgHeight = 50;
+            double scale = Math.min((double) imgWidth / effectImage.getWidth(null),
+                                        (double) imgHeight / effectImage.getHeight(null));
+            int w = (int) (effectImage.getWidth(null) * scale);
+            int h = (int) (effectImage.getHeight(null) * scale);
+
+            g.drawImage(effectImage, x, y, w, h, null);
         }
     }
     @Override

@@ -34,12 +34,20 @@ public class Shield implements Skill{
     public void update(Character c, GameTimer t, GameScreen g) {
         if (active && !c.isShield()) {
            active = false; //สิ้นสุดการใช้งานเมื่อชนท่อ
+           c.setInvincible(3000);
         }
     }
     @Override
     public void drawEffect(Graphics g, int x, int y){
         if (active && effectImage != null) {
-            g.drawImage(effectImage, x, y, 50, 50, null);
+                int imgWidth = 50;  // ขนาดภาพตัวละคร
+                int imgHeight = 50;
+                double scale = Math.min((double) imgWidth / effectImage.getWidth(null),
+                                        (double) imgHeight / effectImage.getHeight(null));
+                int w = (int) (effectImage.getWidth(null) * scale);
+                int h = (int) (effectImage.getHeight(null) * scale);
+
+                g.drawImage(effectImage, x, y, w, h, null);
         }
     }
     @Override

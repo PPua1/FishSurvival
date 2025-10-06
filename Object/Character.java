@@ -1,63 +1,35 @@
 package Object;
+import java.awt.*;
+
 import Lib.GameTimer;
 import Object.CharacterSkill.Skill;
 import Screen.GameScreen;
-import java.awt.*;
 
 public class Character {
     private int x;
     private int y;
-    private int speedY = 0;//ความเร็วแนวตั้ง
+    private double speedY = 0;//ความเร็วแนวตั้ง
     private Image icon;
     private CharacterType characterType;
     private boolean isAlive = true;
     private boolean isJumping = false;
 
+    private static final double Gravity = 0.4; //แรงโน้มถ่วงเป็น1
+    private static final int Jump =  -6 ; //ความเร็วตอนกระโดด
+    private static final int Character_Size = 50;
+
     private Skill skill;
     private boolean ghostMode = false;
     private boolean shieldMode = false;
+    private boolean dashMode = false;
+    private boolean invincible = false;
+    private long invincibleEndTime = 0;
 
-    private static final int Gravity = 1; //แรงโน้มถ่วงเป็น1
-    private static final int Jump =  -10 ; //ความเร็วตอนกระโดด
-    private static final int Character_Size = 40;
     public Character(int x, int y , CharacterType type){
         this.x = x;
         this.y = y;
         this.characterType = type ; 
         this.icon = type.getCharacterImage();
-    }
-    public void setSkill(Skill skill){
-        this.skill = skill;
-    } 
-    public Skill getSkill(){
-        return this.skill;
-    }
-    public void useSkill(GameScreen g){
-        if (skill != null && skill.isAvailable()) {
-            skill.activate(this, g);
-        }
-    }
-    public void updateSkill(GameTimer timer, GameScreen g){
-        if (skill != null && skill.isActive()) {
-            skill.update(this, timer, g);
-        }
-    }
-    public boolean isGhost(){
-        return ghostMode;
-    }
-    public void setGhostMode(boolean ghost){
-        this.ghostMode = ghost;
-    }
-    public boolean isShield(){
-        return shieldMode;
-    }
-    public void setShieldMode(boolean shield){
-        this.shieldMode = shield;
-    }
-    public void resetSkill(){
-        if (skill!= null) {
-            skill.reset();
-        }
     }
     public void Reset(int startX, int startY){
         this.x = startX;
@@ -89,39 +61,98 @@ public class Character {
             collide();
         }
         //หัวชนเพดาน -> ตาย
-        if (y <= 0) {
-            y = 0;
-            speedY = 0;
+        // if (y <= 0) {
+        //     y = 0;
+        //     speedY = 0;
             
-        }
+        // }
     }
 
     //ชนแล้วตาย
     public void collide(){
-        this.isAlive = false;
-
+        if (!isAlive) return; // ป้องกันเรียกซ้ำ
+        isAlive = false;
+        setInvincible(3000); // กระพริบ 0.8 วินาทีก่อน GameOver
     }
 
     public void draw(Graphics g){
 
-        int imgWidth = 60;  // ขนาดภาพตัวละคร
-        int imgHeight = 60;
-        int w = 0, h = 0;
         if (icon != null) {
+                int imgWidth = 50;  // ขนาดภาพตัวละคร
+                int imgHeight = 50;
                 double scale = Math.min((double) imgWidth / icon.getWidth(null),
                                         (double) imgHeight / icon.getHeight(null));
-                w = (int) (icon.getWidth(null) * scale);
-                h = (int) (icon.getHeight(null) * scale);
-            }
-            if (skill != null && skill.isActive()) {
-                skill.drawEffect(g, x, y);
-            }else if (icon != null) {
-                g.drawImage(icon, x, y, w, h, null);
-            }
-    }
+                int w = (int) (icon.getWidth(null) * scale);
+                int h = (int) (icon.getHeight(null) * scale);
 
+                if (invincible && (System.currentTimeMillis() / 200) % 2 == 0) {
+                // กระพริบ
+                return;
+                }
+
+                g.drawImage(icon, x, y, w, h, null);
+        }
+    }         
+
+    
     public Rectangle getBounds() {
             return new Rectangle(x, y, Character_Size, Character_Size);
+    }
+
+    public void setSkill(Skill skill){
+        this.skill = skill;
+    } 
+    public Skill getSkill(){
+        return this.skill;
+    }
+    public void useSkill(GameScreen g){
+        if (skill != null && skill.isAvailable()) {
+            skill.activate(this, g);
+        }
+    }
+    public void updateSkill(GameTimer timer, GameScreen g){
+        if (skill != null && skill.isActive()) {
+            skill.update(this, timer, g);
+        }
+    }
+    public boolean isGhost(){
+        return ghostMode;
+    }
+    public void setGhostMode(boolean ghost){
+        this.ghostMode = ghost;
+    }
+    public boolean isShield(){
+        return shieldMode;
+    }
+    public void setShieldMode(boolean shield){
+        this.shieldMode = shield;
+    }
+    public boolean isdash(){
+        return dashMode;
+    }
+    public void setDashMode(boolean dash){
+        this.dashMode = dash;
+    }
+    public void resetSkill(){
+        if (skill!= null) {
+            skill.reset();
+        }
+    }
+
+    public boolean isInvincible() {
+    return invincible;
+    }
+
+    public void setInvincible(long durationMs) {
+        this.invincible = true;
+        this.invincibleEndTime = System.currentTimeMillis() + durationMs;
+    }
+
+    // เรียกทุกเฟรม
+    public void updateInvincible() {
+        if (invincible && System.currentTimeMillis() >= invincibleEndTime) {
+            invincible = false;
+        }
     }
 
     public int getX(){ return x; }
