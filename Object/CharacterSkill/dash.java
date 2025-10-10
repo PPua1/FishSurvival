@@ -8,7 +8,7 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 public class dash implements Skill{
-    private int duration = 5000; //เวลาการใช้สกิล 5 วิ
+    private int duration = 10000; //เวลาการใช้สกิล 5 วิ
     private boolean active = false; 
     private boolean use = false; //ใช้ไปหรือยัง
     private long startTimer; // เวลาที่เริ่มใช้งาน
@@ -34,7 +34,7 @@ public class dash implements Skill{
             startTimer = System.currentTimeMillis();
 
             originalVelocityX = g.getPipeManager().getPipeSpeed();
-            g.getPipeManager().setVelocityX(originalVelocityX*4);//เร็วขึ้น4เท่าจากความเร็วเดิม
+            g.getPipeManager().setVelocityX(originalVelocityX*10);//เร็วขึ้น4เท่าจากความเร็วเดิม
             c.setDashMode(true);
         }
     }
@@ -51,8 +51,8 @@ public class dash implements Skill{
     @Override
     public void drawEffect(Graphics g, int x, int y){
         if (active && effectImage != null) {
-            int imgWidth = 50;  // ขนาดภาพตัวละคร
-            int imgHeight = 50;
+            int imgWidth = 70;  // ขนาดภาพตัวละคร
+            int imgHeight = 70;
             double scale = Math.min((double) imgWidth / effectImage.getWidth(null),
                                         (double) imgHeight / effectImage.getHeight(null));
             int w = (int) (effectImage.getWidth(null) * scale);

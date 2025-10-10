@@ -69,4 +69,45 @@ public class FileManager {
             e.printStackTrace();
         }
     }
+    /**
+     * โหลดคะแนนทั้งหมดเป็น ArrayList<ScoreEntry>
+     * เรียงลำดับจากมากไปน้อย
+     */
+    public ArrayList<ScoreEntry> loadScores() {
+        ArrayList<ScoreEntry> scores = new ArrayList<>();
+        Map<String, Integer> data = LoadPlayerData();
+        
+        // แปลง Map เป็น ArrayList<ScoreEntry>
+        for (Map.Entry<String, Integer> entry : data.entrySet()) {
+            scores.add(new ScoreEntry(entry.getKey(), entry.getValue()));
+        }
+        
+        // เรียงจากมากไปน้อย
+        scores.sort((a, b) -> b.getScore() - a.getScore());
+        
+        return scores;
+    }
+    
+    /**
+     * บันทึก ArrayList<ScoreEntry> ลงไฟล์
+     * ถ้ามีผู้เล่นคนเดียวกันหลายคะแนน จะเก็บคะแนนสูงสุด
+     */
+    public void saveScores(ArrayList<ScoreEntry> scores) {
+        Map<String, Integer> data = new HashMap<>();
+        
+        // รวมคะแนนของผู้เล่นคนเดียวกัน เก็บแค่คะแนนสูงสุด
+        for (ScoreEntry entry : scores) {
+            String name = entry.getName();
+            int score = entry.getScore();
+            int currentScore = data.getOrDefault(name, 0);
+            
+            if (score > currentScore) {
+                data.put(name, score);
+            }
+        }
+        
+        // บันทึกลงไฟล์
+        saveAllData(data);
+    }
+
 }

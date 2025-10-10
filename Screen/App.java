@@ -1,5 +1,6 @@
 package Screen;
 
+import Lib.BackgroundMusic;
 import Lib.FileManager;
 import Lib.GameTimer;
 
@@ -10,6 +11,8 @@ public class App extends JFrame {
     private Screen currentScreen;
     private GameTimer timer;
     private FileManager fileManager;
+    private BackgroundMusic musicPlayer = new BackgroundMusic();
+
 
     public void setScreen(Screen screen) {
         if (currentScreen != null) {
@@ -23,7 +26,6 @@ public class App extends JFrame {
         currentScreen.requestFocusInWindow();
         revalidate();              // บอก JFrame ให้จัด layout ใหม่
         repaint();                 // วาดใหม่
-
 }
 
 
@@ -37,7 +39,7 @@ public class App extends JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout()); // ให้ JPanel เต็มหน้าจอ
-        setVisible(true); //  ต้อง setVisible(true) เพื่อแสดง JFrame
+        setVisible(true); 
 
         // เริ่มต้นที่ LoginScreen
         setScreen(new LoginScreen(this));
@@ -50,10 +52,11 @@ public class App extends JFrame {
             }
         });
         timer.start();
+        musicPlayer.playMusic("Asset/song/BGM04.wav");
     }
   
     public FileManager getFileManager() {
-        return fileManager;
+        return this.fileManager;
     }
 
     public void exitApplication() {
@@ -66,4 +69,4 @@ public class App extends JFrame {
     public static void main(String[] args) {
         new App();
     }  
-}
+}  

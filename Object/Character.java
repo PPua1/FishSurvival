@@ -15,13 +15,14 @@ public class Character {
     private boolean isJumping = false;
 
     private static final double Gravity = 0.4; //แรงโน้มถ่วงเป็น1
-    private static final int Jump =  -6 ; //ความเร็วตอนกระโดด
+    private static final int Jump =  -5 ; //ความเร็วตอนกระโดด
     private static final int Character_Size = 50;
 
     private Skill skill;
     private boolean ghostMode = false;
     private boolean shieldMode = false;
     private boolean dashMode = false;
+    private boolean slowMode = false;
     private boolean invincible = false;
     private long invincibleEndTime = 0;
 
@@ -60,12 +61,12 @@ public class Character {
             isJumping = false;
             collide();
         }
-        //หัวชนเพดาน -> ตาย
-        // if (y <= 0) {
-        //     y = 0;
-        //     speedY = 0;
+        //หัวชนเพดาน -> ขนปกติ ไม่ตาย แค่ติดขอบ
+        if (y <= 0) {
+            y = 0;
+            speedY = Gravity;
             
-        // }
+        }
     }
 
     //ชนแล้วตาย
@@ -132,6 +133,13 @@ public class Character {
     }
     public void setDashMode(boolean dash){
         this.dashMode = dash;
+    }
+
+    public boolean isSlow(){
+        return slowMode;
+    }
+    public void setSlowMode(boolean slow){
+        this.slowMode = slow;
     }
     public void resetSkill(){
         if (skill!= null) {
