@@ -52,7 +52,7 @@ public class App extends JFrame {
             }
         });
         timer.start();
-        musicPlayer.playMusic("Asset/song/BGM04.wav");
+        musicPlayer.playMusic("Asset/BGM04.wav");
     }
   
     public FileManager getFileManager() {
