@@ -55,21 +55,21 @@ public class GameLogic {
 
 public void update() {
     if (character != null) {
-        character.update();        // update ตำแหน่ง + gravity
-        character.updateInvincible(); // ตรวจสอบเวลาของ invincible
-    } else return;
+        character.update();        // update ตำแหน่ง 
+        character.updateInvincible(); // ตรวจสอบเวลา invincible
+    }
 
     // ตรวจสอบชนท่อ (ถ้ายัง alive และไม่ invincible)
     if (character.isAlive() && pipeManager.checkCollision(character.getBounds())) {
         if (character.isShield()) {
             character.setShieldMode(false); // ใช้เกราะกันตาย 1 ครั้ง
         }else if(character.isdash()){
-            character.setAlive(true);
+            character.setAlive(true); // แดชชนท่อได้ไม่ตาย
         }else if(character.isGhost()){
-            character.setAlive(true);
+            character.setAlive(true); // ล่องหนชนท่อไม่ตาย
         }else if (!character.isInvincible()) {
             character.setAlive(false);
-            character.setInvincible(1000);
+            character.setInvincible(1000); // ถ้าไม่ได้กระพริบ หลังใช้สกิลแล้วชนท่อ ตาย กระพริบ1วิก่อนเปลี่ยนจอ
         }
     }
 
@@ -79,7 +79,7 @@ public void update() {
     }
 
 
-    // spawn pipe ใหม่ถ้าจำเป็น
+    // spawn pipe ใหม่
     ArrayList<Pipe> pipes = pipeManager.getPipes();
     if (pipes.isEmpty() || pipes.get(pipes.size() - 1).getX() < boardWidth - 200) {
         pipeManager.spawnPipe();
@@ -94,12 +94,21 @@ public void update() {
     }
 
     // เปลี่ยนธีมตาม score
-    int themeIndex = (score.getCurrentScore() / 5) % themes.length;
+    int themeIndex = (score.getCurrentScore() / 20) % themes.length;
     backgroundImg = new ImageIcon(getClass().getResource(backgrounds[themeIndex])).getImage();
     pipeManager.setTheme(themes[themeIndex]);
 
-    // เปลี่ยนความเร็วท่อ
+    // เปลี่ยนความเร็วตามธีมด่าน
+    if(themeIndex == 1){
+        pipeManager.setVelocityX(-2);
+    }else if(themeIndex == 2){
+        pipeManager.setVelocityX(-3);
+    }
 
+    // เปลี่ยนขนาดช่องว่างท่อ เมื่อคะแนนถึง
+    if(score.getCurrentScore() > 50){
+        pipeManager.setGapPipe(100);
+    }
 }
 
 
@@ -108,12 +117,17 @@ public void update() {
     }
 
     public void drawCharacter(Graphics g) {
-        if (character.getSkill() != null) {
+        if (character != null) {
+            if (character.getSkill() == null || !character.getSkill().isActive()) {
+                character.draw(g);
+            }
+        }
+
+
+        if (character.getSkill() != null && character != null) {
             character.getSkill().drawEffect(g, character.getX(), character.getY());
         }
-        if (character != null){
-            character.draw(g);
-        }
+        
         
     }
 
@@ -121,9 +135,23 @@ public void update() {
         ArrayList<Pipe> pipes = pipeManager.getPipes();
         for (Pipe pipe : pipes) {
             g.drawImage(pipe.getImage(), pipe.getX(), pipe.getY(),
-                    pipe.getBounds()[0].width, pipe.getBounds()[0].height, null);
+                    pipe.getPipeBounds(pipe)[0].width, pipe.getPipeBounds(pipe)[0].height, null);
+
+            // // เอาไว้เช็คขอบ
+            //     g.setColor(Color.MAGENTA);
+            //     for (Rectangle r : pipe.getPipeBounds(pipe)) {
+            //     g.drawRect(r.x, r.y, r.width, r.height);
+
+            if(character.getSkill() instanceof Slow && character.getSkill().isActive()){
+                // เอาไว้เช็คขอบ
+                g.setColor(Color.RED);
+                for (Rectangle r : pipe.getPipeBounds(pipe)) {
+                g.drawRect(r.x, r.y, r.width, r.height);
+                }
+            }
+                }
         }
-    }
+    
 
     public Image getBackground() {
         return backgroundImg;

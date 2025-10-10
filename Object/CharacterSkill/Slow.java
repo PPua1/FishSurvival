@@ -33,6 +33,7 @@ public class Slow implements Skill{
             startTimer = System.currentTimeMillis();
             originalVelocityX = g.getPipeManager().getPipeSpeed();
             g.getPipeManager().setVelocityX(-1);
+            c.setSlowMode(true);
        }
     }
     @Override
@@ -40,6 +41,7 @@ public class Slow implements Skill{
         if (active&& System.currentTimeMillis() - startTimer >= duration) {
             active = false;
             g.getPipeManager().setVelocityX(originalVelocityX);
+            c.setGhostMode(false);
             c.setInvincible(3000);
         }
         

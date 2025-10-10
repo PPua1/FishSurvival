@@ -10,6 +10,7 @@ public class MenuScreen extends Screen {
     private JButton characterButton;
     private Image backgroundImg;
     private final CharacterType selectedCharacter;
+    private JLabel useSkill;
 
     public MenuScreen(App app, String playerName, CharacterType selectedCharacter) {
         super(app);
@@ -46,9 +47,15 @@ public class MenuScreen extends Screen {
         characterButton.setBorderPainted(false);      // ไม่วาดเส้นขอบ
         characterButton.setBackground(Color.WHITE);
 
+        useSkill = new JLabel("Press F for use Skill.");
+        useSkill.setHorizontalAlignment(SwingConstants.CENTER);
+        useSkill.setBounds(0, 460, 360, 45);
+        useSkill.setFont(new Font("Arial", Font.PLAIN, 15));
+
 
         add(playButton);
         add(characterButton);
+        add(useSkill);
 
         // ปุ่มกดแล้วทำงาน
         playButton.addActionListener(e -> {

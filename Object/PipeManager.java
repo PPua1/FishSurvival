@@ -54,7 +54,7 @@ public class PipeManager {
 
     public boolean checkCollision(Rectangle FishRect) {
         for (Pipe pipe : pipes) {
-            for (Rectangle rect : pipe.getBounds()) {
+            for (Rectangle rect : pipe.getPipeBounds(pipe)) {
                 if (FishRect.intersects(rect)) return true;
             }
         }
@@ -80,7 +80,16 @@ public class PipeManager {
     public int getPipeSpeed(){
         return velocityX;
     }
+
     public void setVelocityX(int velocityX){
         this.velocityX = velocityX;
+    }
+
+    public void setGapPipe(int gap){
+        this.gap = gap;
+    }
+
+    public int getGapPipe(){
+        return gap;
     }
 }

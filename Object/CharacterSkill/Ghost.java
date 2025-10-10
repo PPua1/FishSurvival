@@ -30,8 +30,8 @@ public class Ghost implements Skill {
             use = true; //เปลี่ยนสถานะเป็นใช้แล้ว
             active = true; // กำลังล่องหน
             startTimer = System.currentTimeMillis(); //ดึงเวลาปัจจุบัน
-           c.setGhostMode(true); //ตัวละครไม่ชนท่อ
-       }
+           c.setGhostMode(true); //เปิดใช้งานสกิล
+        }
     }
     @Override
     public void update(Character c, GameTimer t, GameScreen g) {

@@ -19,8 +19,8 @@ public class GameScreen extends Screen {
     private App app;
     private int finalScore;
     private GameTimer gameTimer;
-    private boolean isCountdonw = false;
-    private long countdonwStartTime;
+    private boolean isCountdown = false;
+    private long countdownStartTime;
 
     public GameScreen(App app, String playerName, CharacterType player, int finalScore) {
         super(app);
@@ -41,8 +41,8 @@ public class GameScreen extends Screen {
             @Override
             public void keyPressed(KeyEvent e) { handleInput(e); }
         });
-        //เริ่มจับเวลาcountdonw
-        countdonwStartTime = System.currentTimeMillis();
+        //เริ่มจับเวลา countdown
+        countdownStartTime = System.currentTimeMillis();
         gameTimer = new GameTimer(16,() ->{
             update();
             repaint();
@@ -76,8 +76,6 @@ public class GameScreen extends Screen {
         g.drawString("Score: " + logic.getScore().getCurrentScore(), 20, 40);
     }
 
-
-
     @Override
     public void handleInput(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_SPACE && character != null && character.isAlive()){
@@ -93,11 +91,11 @@ public class GameScreen extends Screen {
 
     @Override
     public void update() {
-        // 1. Countdown ก่อนเริ่มเกม
-        if (!isCountdonw) {
+        // Countdown ก่อนเริ่มเกม
+        if (!isCountdown) {
             long currentTime = System.currentTimeMillis();
-            if (currentTime - countdonwStartTime >= 1000) {
-                isCountdonw = true;
+            if (currentTime - countdownStartTime >= 1000) {
+                isCountdown = true;
             } else return;
         }
 

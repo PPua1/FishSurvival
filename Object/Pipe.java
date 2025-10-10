@@ -6,8 +6,8 @@ import java.awt.Rectangle;
 public class Pipe {
     private int x;
     private int y;
-    private int width = 55;
-    private int height = 300;
+    private int width = 50;
+    private int height = 290;
     private Image image;
     private boolean passed = false;
     private boolean bottomPipe;
@@ -58,12 +58,33 @@ public class Pipe {
         return width;
     }
 
-    // คืนค่า Rectangle ของท่อนี้ สำหรับตรวจชน
-    public Rectangle[] getBounds() {
+    public Rectangle[] getPipeBounds(Pipe pipe) {
+    int paddingX = 5;
+    int paddingY = 10;
+        //ท่อบน
+    if (pipe.getY() == 0) {
         return new Rectangle[] {
-            new Rectangle(x, y, width, height)
+            new Rectangle(
+                pipe.getX() + paddingX,
+                pipe.getY() + paddingY -30,
+                pipe.getWidth() - paddingX,
+                pipe.getHeight()
+            )
+        };
+    } else {
+        
+        return new Rectangle[] {
+            new Rectangle(
+                pipe.getX() + paddingX,
+                pipe.getY() +30,
+                pipe.getWidth() - paddingX,
+                pipe.getHeight()
+            )
         };
     }
+}
+
+
 
     public boolean isPassed() {
             return passed;
