@@ -1,11 +1,9 @@
 package Screen;
 
-import javax.swing.*;
-
 import Lib.FileManager;
-
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import javax.swing.*;
 
 public class LoginScreen extends Screen {
     private JTextField nameField;
@@ -70,7 +68,7 @@ public class LoginScreen extends Screen {
             playerName = nameField.getText().trim();
         if (!playerName.isEmpty()) {
             //write file
-            fileManager = new FileManager("Lib/fileScore.txt");
+            fileManager = new FileManager("highscore.txt");
             fileManager.savePlayerData(playerName, 0);
 
             // go to menuscreen

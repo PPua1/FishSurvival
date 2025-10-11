@@ -6,6 +6,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class MenuScreen extends Screen {
+    private String playername;
     private JButton playButton;
     private JButton characterButton;
     private Image backgroundImg;
@@ -14,6 +15,7 @@ public class MenuScreen extends Screen {
 
     public MenuScreen(App app, String playerName, CharacterType selectedCharacter) {
         super(app);
+        this.playername = playerName;
         // ตั้งค่ารูปตัวละครบนหน้าเมนู
         if(selectedCharacter != null){
             this.selectedCharacter = selectedCharacter;
@@ -59,11 +61,11 @@ public class MenuScreen extends Screen {
 
         // ปุ่มกดแล้วทำงาน
         playButton.addActionListener(e -> {
-            app.setScreen(new GameScreen(app, "", selectedCharacter,0));
+            app.setScreen(new GameScreen(app, playername, selectedCharacter,0));
         });
 
         characterButton.addActionListener(e -> {
-            app.setScreen(new CharacterScreen(app, "", selectedCharacter));
+            app.setScreen(new CharacterScreen(app, playername, selectedCharacter));
         });
 
     }

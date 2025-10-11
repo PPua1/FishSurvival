@@ -10,14 +10,21 @@ public class FileManager {
     }
 
     public void saveScore(String playerName,int score){
+        if (playerName == null || playerName.trim().isEmpty()) {
+        System.err.println("Invalid player name! Score not saved.");
+        return;
+        }
         // save Score (new score > oldscore)
         Map<String,Integer> data = LoadPlayerData();
-        int oldscore = data.getOrDefault(playerName, score); //ถ้ามีชื่อผู้เล่นในmapให้ใช้คะแนนที่เก็บไว้ ถ้าไม่มีให้ใช้score
+        int oldscore = data.getOrDefault(playerName, 0); //ถ้ามีชื่อผู้เล่นในmapให้ใช้คะแนนที่เก็บไว้ ถ้าไม่มีให้ใช้score
 
         if(score > oldscore){
             data.put(playerName, score);
+            System.out.println("Saving score for " + playerName + ": " + score);
             saveAllData(data);//บันทึกข้อมูลลงไฟล์
-        }
+        }else {
+        System.out.println("Not saving score for " + playerName + " because " + score + " <= " + oldscore);
+    }
     }
     //เก็บคะแนนสูงสุดของจำนวณ 5 user
     public ArrayList<ScoreEntry> getTop5Score(){
@@ -36,7 +43,8 @@ public class FileManager {
                 }
             }
             
-        } catch (IOException e) {
+        } catch (Exception e) {
+            System.err.println("Error saving data to file: " + e.getMessage());
             e.printStackTrace();
         }
         
@@ -61,8 +69,20 @@ public class FileManager {
         }
         return maxScore;
     }
+    
+    //ดึงคะแนนสูงสุดของ user นั้น
+    public int getPlayerHighScore(String playerName) {
+        Map<String, Integer> data = LoadPlayerData();
+        return data.getOrDefault(playerName, 0);
+    }
+
     //บันทึกข้อมูลผู้เล่น(ของผู้เล่นเดียว)
     public void savePlayerData(String name , int score){
+        if (name == null || name.trim().isEmpty()) {
+        System.err.println("Invalid player name! Data not saved.");
+        return;
+        }
+
         Map<String,Integer> data = LoadPlayerData();
         data.put(name, score);
         saveAllData(data);
@@ -96,6 +116,7 @@ public class FileManager {
                 bw.write(entry.getKey() + "," + entry.getValue());
                 bw.newLine();
             }
+            System.out.println("Data saved to file: " + fileName);
         } catch (Exception e) {
             e.printStackTrace();
         }
