@@ -1,5 +1,6 @@
 package Lib;
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class FileManager {
@@ -8,6 +9,7 @@ public class FileManager {
     public FileManager(String filename){
         this.fileName = filename;
     }
+
     public void saveScore(String playerName,int score){
         // save Score (new score > oldscore)
         Map<String,Integer> data = LoadPlayerData();
@@ -18,6 +20,36 @@ public class FileManager {
             saveAllData(data);//บันทึกข้อมูลลงไฟล์
         }
     }
+    //เก็บคะแนนสูงสุดของจำนวณ 5 user
+    public ArrayList<ScoreEntry> getTop5Score(){
+        Map<String, Integer> bestScores = new HashMap<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))){
+            String line; //เก็บข้อความแต่ละบรรทัด
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 2) {
+                    String name = parts[0].trim();//ดึงชื่อผู้เล่นและเอาเว้นวรรคหน้า-หลังออก
+                    int score = Integer.parseInt(parts[1].trim()); // เอาเว้นวรรคออก และ แปลงค่าInteger ไปเป็น int
+
+                    if (!bestScores.containsKey(name) || score > bestScores.get(name)) {
+                        bestScores.put(name, score);
+                    }
+                }
+            }
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        ArrayList<ScoreEntry> scoreList = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : bestScores.entrySet()) {
+            scoreList.add(new ScoreEntry(entry.getKey(), entry.getValue()));
+        }
+        scoreList.sort((a, b) -> Integer.compare(b.getScore(), a.getScore())); //เรียงจากมากไปน้อย
+
+        return new ArrayList<>(scoreList.subList(0, Math.min(5, scoreList.size())));
+    }
+
     //โหลดคะแนนสูงสุดรวม(ของทุกคน)
     public int LoadHighScore(){
         Map<String,Integer> data = LoadPlayerData();
