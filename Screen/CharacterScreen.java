@@ -1,10 +1,9 @@
 package Screen;
 
 import Object.CharacterType;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import javax.swing.*;
 
 
 public class CharacterScreen extends Screen {
@@ -20,7 +19,8 @@ public class CharacterScreen extends Screen {
     private JLabel character;
     private Image characterImage;
     private JLabel characterNameLabel;
-    private JLabel characterDescription;
+    private JTextArea characterDescription;
+    private JLabel Skillcon;
     
     public CharacterScreen(App app, String playerName, CharacterType selectedCharacter) {
         super(app);
@@ -36,7 +36,7 @@ public class CharacterScreen extends Screen {
         }
     }
 
-    @Override
+    //@Override
     protected void initial() {
         //ตั้งค่ารูปพื้นหลัง
         backgroundImage = new ImageIcon(getClass().getResource("/Asset/Sea.png")).getImage();
@@ -64,10 +64,20 @@ public class CharacterScreen extends Screen {
         characterNameLabel = new JLabel("", SwingConstants.CENTER);
         characterNameLabel.setFont(new Font("Arial", Font.BOLD, 25));
         characterNameLabel.setBounds(0, 270, 360, 40);
-        //คำอธิบายสกิลตัวละคร
-        characterDescription = new JLabel("", SwingConstants.CENTER);
+       //คำอธิบายสกิลตัวละคร
+        characterDescription = new JTextArea("",3, SwingConstants.CENTER);
         characterDescription.setFont(new Font("Arial", Font.PLAIN, 16));
-        characterDescription.setBounds(0, 290, 360, 70);
+        characterDescription.setBounds(30, 320, 360, 70);
+        characterDescription.setLineWrap(true);
+        characterDescription.setWrapStyleWord(true);
+        characterDescription.setEditable(false);
+        characterDescription.setOpaque(false);
+        characterDescription.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        Skillcon = new JLabel("One time use.");
+        Skillcon.setBounds(130, 360, 360, 45);
+        Skillcon.setFont(new Font("Arial", Font.BOLD, 15));
+
         //ปุ่มยืนยันเลือกตัวละคร
         SelectedButton = new JButton("Seclect");
         SelectedButton.setBounds(99, 410, 150, 45);
@@ -80,6 +90,7 @@ public class CharacterScreen extends Screen {
         ReturnButton.setFont(new Font("Arial", Font.BOLD, 20));
         ReturnButton.setBorderPainted(false);      // ไม่วาดเส้นขอบ
         ReturnButton.setBackground(Color.WHITE);
+        
 
         add(character);
         add(RightButton);
@@ -88,7 +99,8 @@ public class CharacterScreen extends Screen {
         add(characterDescription);
         add(SelectedButton);
         add(ReturnButton);
-
+        add(Skillcon);
+        
         updateCharacter();
 
             //การทำงานของปุ่มต่าง ๆ 
