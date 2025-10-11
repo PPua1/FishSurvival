@@ -113,7 +113,7 @@ public class GameOverScreen extends Screen{
         int y = 20;
         for (int i = 0; i < highScores.size(); i++) {
             ScoreEntry entry = highScores.get(i);
-            JLabel entryLabel = new JLabel((i + 1) + ". " + entry.getName() + "\t- " + entry.getScore());
+            JLabel entryLabel = new JLabel((i + 1) + ". " + entry.getName() + "\t - " + entry.getScore());
             entryLabel.setBounds(20, y, 210, 25);
             scoreBoardPanel.add(entryLabel);
             y += 30;
@@ -140,4 +140,5 @@ public class GameOverScreen extends Screen{
 
     }
 }
+
 
