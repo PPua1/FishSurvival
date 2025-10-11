@@ -3,11 +3,11 @@ package Object;
 import java.awt.*;
 import javax.swing.ImageIcon;
 public enum CharacterType {
-    LUCY("Lucy","Skill Description" , "/Asset/characterImage/Lucy.png"),
-    GUK("Guk Guk", "Skill Description" , "/Asset/characterImage/GukGak.png"),
-    PACHA("Pa Cha Nga Som", "Skill Description" ,"/Asset/characterImage/Pachangasom.png"),
-    YOUNG("Young Prad", "Skill Description" , "/Asset/characterImage/YoungPrad.png"),
-    Twitty("Twitty Tao Sing", "Skill Description" , "/Asset//characterImage/TwittyTaoSing.png");
+    LUCY("Lucy","    I'm just a fish nothing special only heart\n                 Choose Me If you Dare..\n"  , "/Asset/characterImage/Lucy.png"),
+    GUK("Guk Guk", " Creates a shield that blocks one collision." , "/Asset/characterImage/GukGak.png"),
+    PACHA("Pa Cha Nga Som", "    Reveals hidden pipes and slows down \n          movement speed for 30 seconds" ,"/Asset/characterImage/Pachangasom.png"),
+    YOUNG("Young Prad", "  Charges forward with unstoppable force,\n      ignoring all obstacles for 5 seconds." , "/Asset/characterImage/YoungPrad.png"),
+    Twitty("Twitty Tao Sing", "        Becomes invisible for 30 seconds." , "/Asset//characterImage/TwittyTaoSing.png");
 
     private final String displayName;
     private final String description;
