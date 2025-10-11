@@ -1,7 +1,6 @@
 package Object;
 
 import java.awt.*;
-
 import javax.swing.ImageIcon;
 public enum CharacterType {
     LUCY("Lucy","Skill Description" , "/Asset/characterImage/Lucy.png"),
