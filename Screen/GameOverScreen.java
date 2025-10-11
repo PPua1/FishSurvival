@@ -156,12 +156,12 @@
 // }
 package Screen;
 
-import Object.CharacterType;
-import Lib.ScoreEntry;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import javax.swing.*;
+import Lib.ScoreEntry;
+import Object.CharacterType;
 
 public class GameOverScreen extends Screen {
     private int finalScore;
@@ -179,41 +179,15 @@ public class GameOverScreen extends Screen {
         this.playerName = playerName;
         this.player = player;
 
-        // โหลดคะแนนจาก FileManager
-        this.highScores = app.getFileManager().loadScores();
+        // save score user(เฉพาะถ้าสูงกว่าเดิม)
+        app.getFileManager().saveScore(playerName, finalScore);
+
+        // โหลดคะแนน Top 5 จาก FileManager
+        this.highScores = app.getFileManager().getTop5Score();
         if (this.highScores == null) this.highScores = new ArrayList<>();
 
-        // ตรวจสอบว่ามีชื่อผู้เล่นอยู่แล้วหรือไม่
-        boolean found = false;
-        for (ScoreEntry entry : highScores) {
-            if (entry.getName().equals(playerName)) {
-                if (finalScore > entry.getScore()) {
-                    entry.setScore(finalScore); // อัปเดตคะแนนถ้าสูงกว่า
-                }
-                found = true;
-                break;
-            }
-        }
-
-        // ถ้าไม่เจอชื่อ ให้เพิ่มเป็น entry ใหม่
-        if (!found) {
-            highScores.add(new ScoreEntry(playerName, finalScore));
-        }
-
-        // เรียงลำดับคะแนนจากมากไปน้อย และเก็บ top 5
-        highScores.sort((a, b) -> b.getScore() - a.getScore());
-        if (highScores.size() > 5) {
-            highScores = new ArrayList<>(highScores.subList(0, 5));
-        }
-
-        // อัปเดต highScore สูงสุด
-        highScore = 0;
-        for (ScoreEntry entry : highScores) {
-            if (entry.getScore() > highScore) highScore = entry.getScore();
-        }
-
-        // บันทึกคะแนนลงไฟล์
-        app.getFileManager().saveScores(highScores);
+        //อัปเดตคะแนนสูงสุด (High Score)
+        highScore = app.getFileManager().LoadHighScore();
 
         initial();
     }

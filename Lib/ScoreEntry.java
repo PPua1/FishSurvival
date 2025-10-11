@@ -23,5 +23,12 @@ public class ScoreEntry {
     public void setScore(int finalScore) {
         this.score = finalScore;
     }
-    
+    public int compareTo(ScoreEntry other){
+        return Integer.compare(other.score, this.score);//เปรียบเทียบคะแนนมากกว่าอยู่บน
+    }
+
+    @Override
+    public String toString(){
+        return name + "," + score;
+    }
 }
