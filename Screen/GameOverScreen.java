@@ -58,16 +58,19 @@ public GameOverScreen(App app, String playerName, CharacterType player, int fina
         JLabel gameOverLabel = new JLabel("Game Over");
         gameOverLabel.setFont(new Font("Monospaced", Font.BOLD, 50));
         gameOverLabel.setForeground(Color.RED);
-        gameOverLabel.setBounds(50, 50, 658, 80);
+        gameOverLabel.setBounds(45, 50, 658, 80);
         add(gameOverLabel);
 
         // Score
         JLabel scoreLabel = new JLabel("Score : " + finalScore);
-        scoreLabel.setBounds(130, 130, 200, 30);
+        scoreLabel.setBounds(115, 140, 200, 30);
+        scoreLabel.setFont(new Font("Arial", Font.PLAIN, 20));
         add(scoreLabel);
 
         JLabel highScoreLabel = new JLabel("High Score : " + highScore);
-        highScoreLabel.setBounds(130, 170, 200, 30);
+        highScoreLabel.setBounds(115, 180, 200, 30);
+        highScoreLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+        
         add(highScoreLabel);
 
         // Retry Button
@@ -95,8 +98,9 @@ public GameOverScreen(App app, String playerName, CharacterType player, int fina
         add(menuButton);
 
         // Score Board
-        JLabel boardLabel = new JLabel("Score Board");
-        boardLabel.setBounds(145, 360, 200, 30);
+        JLabel boardLabel = new JLabel("Leaders Board");
+        boardLabel.setBounds(93, 370, 200, 30);
+        boardLabel.setFont(new Font("Arial", Font.BOLD, 25));
         add(boardLabel);
         
 
@@ -117,12 +121,20 @@ public GameOverScreen(App app, String playerName, CharacterType player, int fina
 
         // แสดงคะแนน
         scoreBoardPanel.removeAll();
-        int y = 20;
+        int y = 60;
         for (int i = 0; i < highScores.size(); i++) {
             ScoreEntry entry = highScores.get(i);
-            JLabel entryLabel = new JLabel((i + 1) + ". " + entry.getName() + "\t - " + entry.getScore());
-            entryLabel.setBounds(20, y, 210, 25);
+            JLabel entryLabel = new JLabel((i + 1) + ". " + entry.getName(), SwingConstants.LEFT);
+            entryLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+            entryLabel.setBounds(20, y, 100, 25);
             scoreBoardPanel.add(entryLabel);
+
+            JLabel scoreBoardLabel = new JLabel("-\t" + entry.getScore(), SwingConstants.RIGHT);
+            scoreBoardLabel.setFont(new Font("Arial", Font.PLAIN, 20)); // แนะนำให้เพิ่ม font ด้วย
+            scoreBoardLabel.setBounds(15, y, 210, 25);
+            scoreBoardPanel.add(scoreBoardLabel);
+
+
             y += 30;
         }
         scoreBoardPanel.revalidate();
