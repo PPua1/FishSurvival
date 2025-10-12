@@ -8,7 +8,7 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 public class dash implements Skill{
-    private int duration = 10000; //เวลาการใช้สกิล 5 วิ
+    private int duration = 5000; //เวลาการใช้สกิล 5 วิ
     private boolean active = false; 
     private boolean use = false; //ใช้ไปหรือยัง
     private long startTimer; // เวลาที่เริ่มใช้งาน
@@ -66,4 +66,5 @@ public class dash implements Skill{
         use = false;
         active = false;
     }
+
 }
