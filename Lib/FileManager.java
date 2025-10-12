@@ -79,8 +79,8 @@ public class FileManager {
     //บันทึกข้อมูลผู้เล่น(ของผู้เล่นเดียว)
     public void savePlayerData(String name , int score){
         if (name == null || name.trim().isEmpty()) {
-        System.err.println("Invalid player name! Data not saved.");
-        return;
+        // System.err.println("Invalid player name! Data not saved.");
+            name = "Guest";
         }
 
         Map<String,Integer> data = LoadPlayerData();
