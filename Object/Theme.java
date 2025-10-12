@@ -10,6 +10,10 @@ public class Theme {
     private ImageIcon topPipeIcon;
     private ImageIcon bottomPipeIcon;
 
+    private Image background;
+    private Image topImage;
+    private Image bottomImage;
+
     public Theme(String topPipePath, String bottomPipePath) {
         this.topPipePath = topPipePath;
         this.bottomPipePath = bottomPipePath;
@@ -32,5 +36,23 @@ public class Theme {
             return null;
         }
         return new ImageIcon(url);
+    }
+
+    public Theme(Image background, Image top, Image bottom) {
+        this.background = background;
+        this.topImage = top;
+        this.bottomImage = bottom;
+    }
+
+    public Image getBackground() {
+        return background;
+    }
+
+    public Image getTopPipe() {
+        return topImage;
+    }
+
+    public Image getBottomPipe() {
+        return bottomImage;
     }
 }
