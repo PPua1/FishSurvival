@@ -11,6 +11,7 @@ public class App extends JFrame {
     private Screen currentScreen;
     private GameTimer timer;
     private FileManager fileManager;
+    private String playerName;
     private BackgroundMusic musicPlayer = new BackgroundMusic();
 
 
@@ -28,11 +29,18 @@ public class App extends JFrame {
         repaint();                 // วาดใหม่
 }
 
+    public void setPlayerName(String name) {
+        this.playerName = name;
+    }
+
+    public String getPlayerName() {
+        return this.playerName;
+    }
 
     public App() {
         super("Fish Survival");
 
-        this.fileManager = new FileManager("highscore.txt");
+        this.fileManager = new FileManager("Lib/highscore.txt");
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(360, 640);

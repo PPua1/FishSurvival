@@ -113,7 +113,7 @@ public class GameScreen extends Screen {
             if (!character.isAlive() && !character.isInvincible()) {
                 int finalScore = logic.getScore().getCurrentScore();
                 gameTimer.stop();
-                app.setScreen(new GameOverScreen(app, playerName, player, finalScore));
+                app.setScreen(new GameOverScreen(app, this.playerName, player, finalScore));
                 return;
             }
         }

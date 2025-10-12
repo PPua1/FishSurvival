@@ -17,31 +17,38 @@ public class GameOverScreen extends Screen{
     private App app;
     private Image backgroundImg;
 
-    public GameOverScreen(App app, String playerName, CharacterType player, int finalScore) {
-        super(app);
-        this.app = app;
-        this.finalScore = finalScore;
-        this.playerName = playerName;
-        this.player = player;
-
-        // save score user(เฉพาะถ้าสูงกว่าเดิม)
-        if (finalScore > 0) {
-            System.out.println("GameOverScreen: Saving score for player " + playerName + " with score " + finalScore);
-            app.getFileManager().saveScore(playerName, finalScore);
-        }else {
-            System.out.println("GameOverScreen: Final score <= 0, no save");
-        }
+public GameOverScreen(App app, String playerName, CharacterType player, int finalScore) {
+    super(app);
+    this.app = app;
+    this.finalScore = finalScore;
+    
+    // Validate and set default if null
+    if (playerName == null || playerName.trim().isEmpty()) {
+        this.playerName = "Guest_" + System.currentTimeMillis();
         
-
-        // โหลดคะแนน Top 5 จาก FileManager
-        this.highScores = app.getFileManager().getTop5Score();
-        if (this.highScores == null) this.highScores = new ArrayList<>();
-
-        //อัปเดตคะแนนสูงสุด (High Score)
-        highScore = app.getFileManager().getPlayerHighScore(playerName);
-
-        initial();
+    } else {
+        this.playerName = playerName;
     }
+    
+    this.player = player;
+
+    // save score user(เฉพาะถ้าสูงกว่าเดิม)
+    if (finalScore > 0) {
+        System.out.println("GameOverScreen: Saving score for player " + this.playerName + " with score " + finalScore);
+        app.getFileManager().saveScore(this.playerName, finalScore);
+    } else {
+        System.out.println("GameOverScreen: Final score <= 0, no save");
+    }
+    
+    // โหลดคะแนน Top 5 จาก FileManager
+    this.highScores = app.getFileManager().getTop5Score();
+    if (this.highScores == null) this.highScores = new ArrayList<>();
+
+    //อัปเดตคะแนนสูงสุด (High Score)
+    highScore = app.getFileManager().getPlayerHighScore(this.playerName);
+
+    initial();
+}
 
     @Override
     protected void initial() {

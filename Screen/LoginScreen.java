@@ -10,7 +10,6 @@ public class LoginScreen extends Screen {
     private JButton loginButton;
     private String playerName;
     private Image backgroundImg;
-    private FileManager fileManager;
 
     public LoginScreen(App app) {
         super(app);
@@ -43,13 +42,13 @@ public class LoginScreen extends Screen {
         nameField = new JTextField();
         nameField.setMaximumSize(new Dimension(180, 30));
         nameField.setHorizontalAlignment(JTextField.CENTER);
+        nameField.addActionListener(e -> performLogin());
 
         // ปุ่มล็อกอิน
         loginButton = new JButton("confirm");
         loginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         loginButton.setBackground(Color.WHITE);
         loginButton.setFont(new Font("Arial", Font.BOLD, 14));
-
         loginButton.addActionListener(e -> performLogin());
 
         formPanel.add(Box.createVerticalStrut(10));
@@ -68,8 +67,8 @@ public class LoginScreen extends Screen {
             playerName = nameField.getText().trim();
         if (!playerName.isEmpty()) {
             //write file
-            fileManager = new FileManager("highscore.txt");
-            fileManager.savePlayerData(playerName, 0);
+            app.getFileManager().savePlayerData(playerName, 0);
+            app.setPlayerName(playerName);
 
             // go to menuscreen
             app.setScreen(new MenuScreen(app, playerName,null)); 
