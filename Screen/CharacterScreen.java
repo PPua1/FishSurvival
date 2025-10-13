@@ -24,7 +24,7 @@ public class CharacterScreen extends Screen {
     
     public CharacterScreen(App app, String playerName, CharacterType selectedCharacter) {
         super(app);
-
+        this.playerName = playerName;
         // ตั้งค่า currentIndex ให้ตรงกับ selectedCharacter ที่ส่งมา
         this.selectedCharacter = selectedCharacter; // ตัวละครที่ MenuScreen ส่งมา
         currentIndex = 0;
