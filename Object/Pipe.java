@@ -59,7 +59,7 @@ public class Pipe {
     }
 
     public Rectangle[] getPipeBounds(Pipe pipe) {
-    int paddingX = 5;
+    int paddingX = 3;
     int paddingY = 10;
         //ท่อบน
     if (pipe.getY() == 0) {
