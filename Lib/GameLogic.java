@@ -105,7 +105,7 @@ public void update() {
     //     pipeManager.setVelocityX(-3);
     // }
     //เปลี่ยนความเร็วตามคะแนน
-    if(score.getCurrentScore() >= 5){
+    if(score.getCurrentScore() >= 15){
         pipeManager.setVelocityX(-2);
         if(character.getSkill() instanceof Slow && character.getSkill().isActive()){
             pipeManager.setVelocityX(-1);
@@ -116,7 +116,7 @@ public void update() {
     }
 
     // เปลี่ยนขนาดช่องว่างท่อ เมื่อคะแนนถึง
-    if(score.getCurrentScore() > 8){
+    if(score.getCurrentScore() > 50){
         pipeManager.setGapPipe(100);
     }
 }
