@@ -98,15 +98,25 @@ public void update() {
     backgroundImg = new ImageIcon(getClass().getResource(backgrounds[themeIndex])).getImage();
     pipeManager.setTheme(themes[themeIndex]);
 
-    // เปลี่ยนความเร็วตามธีมด่าน
-    if(themeIndex == 1){
+    //เปลี่ยนความเร็วตามธีมด่าน
+    // if(themeIndex == 1){
+    //     pipeManager.setVelocityX(-2);
+    // }else if(themeIndex == 2){
+    //     pipeManager.setVelocityX(-3);
+    // }
+    //เปลี่ยนความเร็วตามคะแนน
+    if(score.getCurrentScore() >= 5){
         pipeManager.setVelocityX(-2);
-    }else if(themeIndex == 2){
-        pipeManager.setVelocityX(-3);
+        if(character.getSkill() instanceof Slow && character.getSkill().isActive()){
+            pipeManager.setVelocityX(-1);
+        }
+        if(character.getSkill() instanceof dash && character.getSkill().isActive()){
+            pipeManager.setVelocityX(-15);
+        }
     }
 
     // เปลี่ยนขนาดช่องว่างท่อ เมื่อคะแนนถึง
-    if(score.getCurrentScore() > 50){
+    if(score.getCurrentScore() > 8){
         pipeManager.setGapPipe(100);
     }
 }
